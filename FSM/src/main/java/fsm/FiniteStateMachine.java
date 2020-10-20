@@ -41,7 +41,8 @@ public abstract class FiniteStateMachine<T> {
                     return ;
 
                 } else{
-                    throw new IncorrectFormatOfExpressionException("Wrong input");
+                    throw new IncorrectFormatOfExpressionException("Incorrect format of mathematical expression,"
+                            + " please try again");
                 }
             }
 
