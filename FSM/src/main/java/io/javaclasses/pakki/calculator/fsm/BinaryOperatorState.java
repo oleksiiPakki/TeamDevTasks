@@ -1,21 +1,25 @@
-package fsm;
+package io.javaclasses.pakki.calculator.fsm;
 
-import math.*;
+import io.javaclasses.pakki.calculator.math.*;
 
 import java.text.CharacterIterator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class BinaryOperatorState<T extends ShuntingYard> extends State<T> {
     private final boolean mayBeFinish;
+    Map<Character, BinaryOperator> operators = new HashMap<>();
 
     BinaryOperatorState(boolean mayBeFinish){
         this.mayBeFinish = mayBeFinish;
     }
 
-
-    @Override
-    public boolean mayBeFinish() {
-        return mayBeFinish;
+    {
+        operators.put('+', new AdditionOperator(1));
+        operators.put('-', new SubtractionOperator(1));
+        operators.put('*', new MultiplyingOperator(2));
+        operators.put('/', new DivisionOperator(2));
     }
 
     @Override
@@ -33,25 +37,12 @@ public class BinaryOperatorState<T extends ShuntingYard> extends State<T> {
         return false;
     }
 
+    public boolean mayBeFinish() {
+        return mayBeFinish;
+    }
+
     private Optional<BinaryOperator> defineBinaryOperator(Character currentCharacter) {
-        switch (currentCharacter) {
-            case '+': {
-                return Optional.of(new AdditionOperator(1));
-            }
-
-            case '-': {
-                return Optional.of(new SubtractionOperator(1));
-            }
-
-            case '/': {
-                return Optional.of(new DivisionOperator(2));
-            }
-
-            case '*': {
-                return Optional.of(new MultiplyingOperator(2));
-            }
-        }
-
-        return Optional.empty();
+        return operators.containsKey(currentCharacter) ? Optional.of(operators.get(currentCharacter))
+                : Optional.empty();
     }
 }

@@ -1,4 +1,4 @@
-package fsm;
+package io.javaclasses.pakki.calculator.fsm;
 
 import java.text.CharacterIterator;
 import java.util.ArrayList;
@@ -9,14 +9,14 @@ public abstract class State<T> {
 
     public abstract boolean mayBeFinish();
 
-    private List<State> transitions = new ArrayList<>();
+    private final List<State<T>> transitions = new ArrayList<>();
 
 
-    public void addTransition(State state){
+    public void addTransition(State<T> state){
         transitions.add(state);
     }
 
-    public List<State> transitions() {
+    public List<State<T>> transitions() {
         return Collections.unmodifiableList(transitions);
     }
 
