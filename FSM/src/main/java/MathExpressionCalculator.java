@@ -1,27 +1,18 @@
-import fsm.ExpressionFiniteStateMachine;
-import fsm.IncorrectFormatOfExpressionException;
-import math.ShuntingYard;
+import io.javaclasses.pakki.calculator.fsm.ExpressionFiniteStateMachine;
+import io.javaclasses.pakki.calculator.fsm.IncorrectFormatOfExpressionException;
+import io.javaclasses.pakki.calculator.fsm.NumberFiniteStateMachine;
+import io.javaclasses.pakki.calculator.math.ShuntingYard;
 
-import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 
+
 public class MathExpressionCalculator {
-    public static void main(String[] args) {
-        String expression = "2*3-4+5";
-        expression.replaceAll(" ", "");
+    public double evaluate(String mathExpression) throws IncorrectFormatOfExpressionException {
 
-        double result = Double.MAX_VALUE;
-        ExpressionFiniteStateMachine finiteStateMachine = new ExpressionFiniteStateMachine();
+        ShuntingYard shuntingYard = new ShuntingYard();
 
-        try {
+        new ExpressionFiniteStateMachine<>().run(new StringCharacterIterator(mathExpression), shuntingYard);
 
-             result = finiteStateMachine.resultOfExecution(new StringCharacterIterator("1.7+0.3+4*5"),
-                    new ShuntingYard());
-
-        }catch (IncorrectFormatOfExpressionException ex){
-            System.out.println(ex.getCause());
-        }
-
-        System.out.println(result);
+        return shuntingYard.popAllOperators();
     }
 }
