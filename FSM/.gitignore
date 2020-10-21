@@ -141,3 +141,8 @@ gradle-app.setting
 ### Gradle Patch ###
 **/build/
 /.gitignore
+/.idea/
+/build/
+/gradle/
+
+/.gradle/
