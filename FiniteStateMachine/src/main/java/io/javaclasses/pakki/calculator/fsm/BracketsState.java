@@ -26,6 +26,7 @@ public class BracketsState<T extends ShuntingYard> extends State<T> {
     /**
      * @return whether state may be finish or not
      */
+
     @Override
     public boolean mayBeFinish() {
         return mayBeFinish;
