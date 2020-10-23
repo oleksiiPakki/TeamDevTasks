@@ -6,7 +6,8 @@ import org.apache.log4j.Logger;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 
-/**Implementation of State.
+/**
+ * Implementation of State.
  * Fsm being on this state when it finds opened bracket
  *
  * @param <T> define the class, representing the result of execution on this state
@@ -30,10 +31,11 @@ public class BracketsState<T extends ShuntingYard> extends State<T> {
         return mayBeFinish;
     }
 
-    /**Define math expression in brackets, calculate the last one and push it on shunting yard
+    /**
+     * Define math expression in brackets, calculate the last one and push it on shunting yard
      *
      * @param inputSequenceOfCharacter String, contains math expression
-     * @param outputSequence Shunting yard with the result of being fsm on this state
+     * @param outputSequence           Shunting yard with the result of being fsm on this state
      * @return Whether fsm being on this state or not
      */
     @Override
@@ -44,18 +46,18 @@ public class BracketsState<T extends ShuntingYard> extends State<T> {
 
         try {
             if (currentCharacter.equals(requiredCharacter)) {
-                if (inputSequenceOfCharacter.next() == ')'){
+                if (inputSequenceOfCharacter.next() == ')') {
                     throw new IncorrectFormatOfExpressionException("Empty brackets");
                 }
 
-                if (logger.isInfoEnabled()){
-                    logger.info("Fsm in a BracketState: " + inputSequenceOfCharacter.current() + "\n");
+                if (logger.isTraceEnabled()) {
+                    logger.trace("Fsm in a BracketState: " + inputSequenceOfCharacter.current() + "\n");
                 }
 
                 String expressionInBrackets = expressionInBrackets(inputSequenceOfCharacter);
 
-                if (logger.isInfoEnabled()){
-                    logger.info("An expression in brackets " + expressionInBrackets + "\n");
+                if (logger.isTraceEnabled()) {
+                    logger.trace("An expression in brackets " + expressionInBrackets + "\n");
                 }
 
                 //calculated math expression in brackets
@@ -64,7 +66,7 @@ public class BracketsState<T extends ShuntingYard> extends State<T> {
 
                 double resultOfExpressionInBrackets = yardForExpressionInBrackets.popAllOperators();
 
-                if (logger.isTraceEnabled()){
+                if (logger.isTraceEnabled()) {
                     logger.trace("The result of calculation expression in brackets is " + resultOfExpressionInBrackets + "\n");
                 }
 
@@ -82,7 +84,7 @@ public class BracketsState<T extends ShuntingYard> extends State<T> {
     }
 
 
-    private String expressionInBrackets(CharacterIterator inputSequenceOfCharacter){
+    private String expressionInBrackets(CharacterIterator inputSequenceOfCharacter) {
         StringBuilder expressionInBrackets = new StringBuilder();
 
         int indexToDefineCorrespondingClosedBracket = 1;
@@ -94,11 +96,11 @@ public class BracketsState<T extends ShuntingYard> extends State<T> {
             expressionInBrackets.append(inputSequenceOfCharacter.current());
             inputSequenceOfCharacter.next();
 
-            if (inputSequenceOfCharacter.current() == '('){
+            if (inputSequenceOfCharacter.current() == '(') {
 
                 indexToDefineCorrespondingClosedBracket++;
 
-            }else if (inputSequenceOfCharacter.current() == ')'){
+            } else if (inputSequenceOfCharacter.current() == ')') {
 
                 indexToDefineCorrespondingClosedBracket--;
             }
