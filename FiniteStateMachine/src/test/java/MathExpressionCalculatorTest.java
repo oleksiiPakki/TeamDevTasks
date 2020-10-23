@@ -82,7 +82,7 @@ public class MathExpressionCalculatorTest {
     public void testDefineIncorrectBracketsExpressionMathExpressions() {
         IncorrectFormatOfExpressionException ex = assertThrows(IncorrectFormatOfExpressionException.class,
                 () -> calculator.evaluate("1+2*()-1)"),
-                "expected calculator() to throw , but it didn't"
+                "expected calculator() to throw, but it didn't"
         );
 
         assertTrue(ex.getMessage().contains("You have incorrect format of expression"));
