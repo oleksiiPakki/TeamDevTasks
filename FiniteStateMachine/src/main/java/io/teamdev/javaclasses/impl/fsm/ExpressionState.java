@@ -49,8 +49,7 @@ public class ExpressionState<T extends List<Command>> extends State<T> {
                         command.execute(environment);
                     }
 
-                    Optional<ValueHolder> possibleResult = environment.closeTopStack()
-                                                                      .getResult();
+                    Optional<ValueHolder> possibleResult = environment.closeTopStack().getResult();
 
                     if (possibleResult.isPresent()) {
 
