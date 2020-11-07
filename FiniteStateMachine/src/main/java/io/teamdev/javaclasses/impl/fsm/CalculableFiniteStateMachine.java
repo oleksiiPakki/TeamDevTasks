@@ -37,6 +37,9 @@ public class CalculableFiniteStateMachine extends FiniteStateMachine<List<Comman
                 return Optional.of(commands);
             }
 
+        } catch (IncorrectFormatOfExpressionException ex) {
+            ex.getCause();
+        }
 
         return Optional.empty();
 
