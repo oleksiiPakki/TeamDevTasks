@@ -78,7 +78,6 @@ public abstract class FiniteStateMachine<T> implements Acceptor {
                         return true;
 
                     } else {
-                        System.out.println(inputSequence.getIndex());
                         throw new DeadLockException("Deadlock:", inputSequence.getIndex());
 
                     }

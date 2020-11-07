@@ -57,6 +57,7 @@ public class NumberFiniteStateMachine extends FiniteStateMachine<StringBuilder> 
                                                                      resultNumber)));
 
                 return Optional.of(resultCommands);
+
             }
 
         } catch (IncorrectFormatOfExpressionException ex) {

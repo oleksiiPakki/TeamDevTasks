@@ -72,6 +72,7 @@ public class NumberState<T extends List<Command>> extends State<T> {
             return false;
 
         } catch (IncorrectFormatOfExpressionException ex) {
+
             ex.getCause();
         }
 

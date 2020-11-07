@@ -50,6 +50,7 @@ public class CalculableState<T extends List<Command>> extends State<T> {
                     Optional<ValueHolder> possibleResult = environment.closeTopStack()
                                                                       .getResult();
 
+
                     if (possibleResult.isPresent()) {
 
                         ValueHolder resultHolder = possibleResult.get();

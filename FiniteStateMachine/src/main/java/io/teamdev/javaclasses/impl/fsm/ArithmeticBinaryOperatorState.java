@@ -15,7 +15,7 @@ import java.util.Optional;
 
 /**
  * Implementation of State.
- * Fsm being on this state when it finds one of the four arithmetical operations (+,-,*,/)
+ * Fsm being on this  state when it finds one of the four arithmetical operations (+,-,*,/)
  *
  * @param <T>
  */

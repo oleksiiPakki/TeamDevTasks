@@ -12,7 +12,7 @@ public class DigitCharacterState extends State<StringBuilder> {
     private final boolean mayBeFinish;
     private final boolean isLexeme;
 
-    DigitCharacterState(boolean mayBeFinish, boolean isLexeme) {
+     DigitCharacterState(boolean mayBeFinish, boolean isLexeme) {
         this.mayBeFinish = mayBeFinish;
         this.isLexeme = isLexeme;
     }
