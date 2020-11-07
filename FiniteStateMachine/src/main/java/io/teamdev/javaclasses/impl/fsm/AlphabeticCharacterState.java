@@ -1,6 +1,9 @@
 package io.teamdev.javaclasses.impl.fsm;
 
+<<<<<<< HEAD
 import io.teamdev.javaclasses.impl.abstracts.State;
+=======
+>>>>>>> 1357042... Implement simple calculator with basic arithmetical operations.
 import org.apache.log4j.Logger;
 
 import java.text.CharacterIterator;
@@ -14,12 +17,22 @@ public class AlphabeticCharacterState extends State<StringBuilder> {
     private final boolean mayBeFinish;
     private final boolean isLexeme;
 
+<<<<<<< HEAD
     AlphabeticCharacterState() {
         this.mayBeFinish = true;
         this.isLexeme = false;
     }
 
     /**
+=======
+    AlphabeticCharacterState(boolean mayBeFinish, boolean isLexeme) {
+        this.mayBeFinish = mayBeFinish;
+        this.isLexeme = isLexeme;
+    }
+
+    /**
+     *
+>>>>>>> 1357042... Implement simple calculator with basic arithmetical operations.
      * @return whether alphabetic character may be finish of name of function or not
      */
     @Override
@@ -32,11 +45,18 @@ public class AlphabeticCharacterState extends State<StringBuilder> {
         return isLexeme;
     }
 
+<<<<<<< HEAD
     /**
      * Appending symbol to stringBuilder if current symbol is letter or return false.
      * or return false if it may not
      *
      * @param inputSequence  String, contains math expression
+=======
+    /**Appending symbol to stringBuilder if current symbol is letter or return false.
+     * or return false if it may not
+     *
+     * @param inputSequence String, contains math expression
+>>>>>>> 1357042... Implement simple calculator with basic arithmetical operations.
      * @param outputSequence StringBuilder, we appending characters of name of function
      * @return true if appending is successful or false if current symbol is not a letter .
      */
