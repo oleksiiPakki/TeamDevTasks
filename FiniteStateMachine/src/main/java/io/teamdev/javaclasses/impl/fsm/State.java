@@ -1,4 +1,6 @@
-package io.javaclasses.pakki.calculator.fsm;
+package io.teamdev.javaclasses.impl.fsm;
+
+import io.teamdev.javaclasses.impl.abstractfactory.Acceptor;
 
 import java.text.CharacterIterator;
 import java.util.ArrayList;
@@ -8,11 +10,11 @@ import java.util.List;
 /**General class for states. Define behaviour of states implementation
  * @param <T> define the class, representing the result of execution on this state
  */
-public abstract class State<T> {
+public abstract class State<T>  {
     private final List<State<T>> transitions = new ArrayList<>();
 
     /**Adding the possible next state
-     * @param state A state, that may following after this one
+     * @param state A state, that may following after current one
      */
     public void addTransition(State<T> state){
         transitions.add(state);
@@ -37,4 +39,8 @@ public abstract class State<T> {
      * @return whether state may be finish or not
      */
     public abstract boolean mayBeFinish();
+
+    public abstract boolean isLexeme();
+
+
 }
