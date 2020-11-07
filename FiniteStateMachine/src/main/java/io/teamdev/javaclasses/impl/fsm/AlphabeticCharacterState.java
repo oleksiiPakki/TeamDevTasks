@@ -7,7 +7,7 @@ import java.text.CharacterIterator;
 /**
  * Representing the alphabetic character in the name of functions
  */
-public class AlphabeticCharacterState extends State<StringBuilder> {
+public class  AlphabeticCharacterState extends State<StringBuilder> {
     private static final Logger logger = Logger.getLogger(AlphabeticCharacterState.class);
 
     private final boolean mayBeFinish;

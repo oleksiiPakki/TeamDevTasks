@@ -54,7 +54,7 @@ public class ExpressionState<T extends List<Command>> extends State<T> {
 
                     if (possibleResult.isPresent()) {
 
-                        ValueHolder resultHolder = possibleResult.get();
+                         ValueHolder resultHolder = possibleResult.get();
 
                         environment.topStack()
                                    .pushOperand(resultHolder);

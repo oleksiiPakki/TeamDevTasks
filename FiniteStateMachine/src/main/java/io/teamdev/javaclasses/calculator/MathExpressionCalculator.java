@@ -26,7 +26,7 @@ public class MathExpressionCalculator {
      * @param mathExpression
      *         String, consisting of a set of numbers, binary operators and functions
 
-     * @throws IncorrectFormatOfExpressionException
+     *  @throws IncorrectFormatOfExpressionException
      */
     public Optional<ValueHolder> evaluate(String mathExpression) throws
                                                                  IncorrectFormatOfExpressionException {
