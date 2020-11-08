@@ -40,7 +40,8 @@ public class DigitCharacterState extends State<StringBuilder> {
      * @return true if current character is a digit or false if it is not
      */
     @Override
-    public boolean accept(CharacterIterator inputSequence, StringBuilder outputSequence) {
+    public boolean accept(CharacterIterator inputSequence, StringBuilder outputSequence) throws
+                                                                                         IncorrectFormatOfExpressionException {
         char currentCharacterOfSequence = inputSequence.current();
 
         if (Character.isDigit(currentCharacterOfSequence)) {
