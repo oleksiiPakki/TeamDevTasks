@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class BooleanBinaryOperatorState<T extends List<Command>> extends State<T> {
+public class BooleanBinaryOperatorState extends State<List<Command>> {
 
     private final boolean mayBeFinish;
     private final boolean isLexeme;
@@ -29,7 +29,7 @@ public class BooleanBinaryOperatorState<T extends List<Command>> extends State<T
     {
         operators.put(">", new GreaterThanBinaryOperator(1));
         operators.put(">=", new GreaterThanOrEqualsToBinaryOperator(1));
-        operators.put("<", new LessThanBinaryOperator(1));
+        operators.put("<", new LessThanBinaryOperator<>(1));
         operators.put("<=", new LessThanOrEqualsToBinaryOperator(1));
         operators.put("==", new EqualsToBinaryOperator(1));
         operators.put("!=", new NotEqualsToBinaryOperator(1));
@@ -65,7 +65,8 @@ public class BooleanBinaryOperatorState<T extends List<Command>> extends State<T
     }
 
     @Override
-    public boolean accept(CharacterIterator inputSequence, T outputSequence) {
+    public boolean accept(CharacterIterator inputSequence, List<Command> outputSequence) throws
+                                                                             IncorrectFormatOfExpressionException {
 
         StringBuilder possibleNameOfOperator = new StringBuilder();
 
