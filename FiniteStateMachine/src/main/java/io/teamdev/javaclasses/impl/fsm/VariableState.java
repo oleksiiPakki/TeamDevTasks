@@ -1,18 +1,21 @@
 package io.teamdev.javaclasses.impl.fsm;
 
+import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
+import io.teamdev.javaclasses.impl.abstracts.State;
+import io.teamdev.javaclasses.impl.runtime.Command;
 import io.teamdev.javaclasses.impl.runtime.ValueHolder;
 
 import java.text.CharacterIterator;
 import java.util.List;
 
-public class VariableState<T extends List<Command>> extends State<T> {
+public class VariableState extends State<List<Command>> {
 
     private final boolean mayBeFinish;
     private final boolean isLexeme;
 
-    VariableState(boolean mayBeFinish, boolean isLexeme) {
-        this.mayBeFinish = mayBeFinish;
-        this.isLexeme = isLexeme;
+    VariableState() {
+        this.mayBeFinish = true;
+        this.isLexeme = true;
     }
 
     @Override
@@ -26,11 +29,12 @@ public class VariableState<T extends List<Command>> extends State<T> {
     }
 
     @Override
-    public boolean accept(CharacterIterator inputSequence, T outputSequence) {
-        try {
+    public boolean accept(CharacterIterator inputSequence, List<Command> outputSequence) throws DeadLockException {
+
             StringBuilder possibleNameOfVariable = new StringBuilder();
 
             int positionBeforeParsingNameOfVariable = inputSequence.getIndex();
+
 
             boolean isSuccess = new NameFiniteStateMachine().run(inputSequence,
                                                                    possibleNameOfVariable);
@@ -58,10 +62,5 @@ public class VariableState<T extends List<Command>> extends State<T> {
 
             return isSuccess;
 
-        } catch (IncorrectFormatOfExpressionException ex) {
-            ex.getCause();
-        }
-
-        return false;
     }
 }

@@ -1,6 +1,4 @@
-package io.teamdev.javaclasses.impl.fsm;
-
-import io.teamdev.javaclasses.impl.abstractfactory.Acceptor;
+package io.teamdev.javaclasses.impl.abstracts;
 
 import java.text.CharacterIterator;
 import java.util.ArrayList;
@@ -45,7 +43,7 @@ public abstract class State<T> {
      *         The result after being on this state
      * @return Whether fsm being on this state or not
      */
-    public abstract boolean accept(CharacterIterator inputSequence, T outputSequence);
+    public abstract boolean accept(CharacterIterator inputSequence, T outputSequence) throws DeadLockException;
 
     /**
      * @return whether state may be finish or not

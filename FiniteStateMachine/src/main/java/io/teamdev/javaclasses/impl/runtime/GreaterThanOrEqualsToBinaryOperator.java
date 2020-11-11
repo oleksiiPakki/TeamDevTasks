@@ -1,10 +1,6 @@
-package io.teamdev.javaclasses.impl.math;
+package io.teamdev.javaclasses.impl.runtime;
 
-import io.teamdev.javaclasses.impl.runtime.BooleanValueHolder;
-import io.teamdev.javaclasses.impl.runtime.DoubleValueReader;
-import io.teamdev.javaclasses.impl.runtime.ValueHolder;
-
-public class GreaterThanOrEqualsToBinaryOperator implements BooleanBinaryOperator<Double> {
+public class GreaterThanOrEqualsToBinaryOperator implements BooleanBinaryOperator {
     private final int priority;
 
     public GreaterThanOrEqualsToBinaryOperator(int priority) {
@@ -12,7 +8,7 @@ public class GreaterThanOrEqualsToBinaryOperator implements BooleanBinaryOperato
     }
 
     @Override
-    public BooleanValueHolder execute(ValueHolder<Double> leftOperand, ValueHolder<Double> rightOperand){
+    public BooleanValueHolder execute(ValueHolder leftOperand, ValueHolder rightOperand){
 
         boolean greaterThanOrEqualsTo = DoubleValueReader.readDouble(leftOperand) >= DoubleValueReader.readDouble(rightOperand);
 

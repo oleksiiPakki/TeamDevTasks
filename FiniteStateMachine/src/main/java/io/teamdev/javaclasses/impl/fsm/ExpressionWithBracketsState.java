@@ -1,22 +1,25 @@
 package io.teamdev.javaclasses.impl.fsm;
 
-import io.teamdev.javaclasses.impl.abstractfactory.FSMFactory;
-import io.teamdev.javaclasses.impl.abstractfactory.FSMFactoryImpl;
+import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
+import io.teamdev.javaclasses.impl.abstracts.FSMFactory;
+import io.teamdev.javaclasses.impl.abstracts.State;
+import io.teamdev.javaclasses.impl.runtime.Command;
 import io.teamdev.javaclasses.impl.runtime.ValueHolder;
 
 import java.text.CharacterIterator;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ExpressionWithBracketsState<T extends List<Command>> extends State<T> {
+public class ExpressionWithBracketsState extends State<List<Command>> {
 
     private final boolean mayBeFinish;
     private final boolean isLexeme;
+    private final FSMFactory factory;
 
-    ExpressionWithBracketsState(boolean mayBeFinish, boolean isLexeme) {
-        this.mayBeFinish = mayBeFinish;
-        this.isLexeme = isLexeme;
+    ExpressionWithBracketsState(FSMFactory factory) {
+        this.mayBeFinish = true;
+        this.isLexeme = true;
+        this.factory = factory;
     }
 
     @Override
@@ -30,44 +33,28 @@ public class ExpressionWithBracketsState<T extends List<Command>> extends State<
     }
 
     @Override
-    public boolean accept(CharacterIterator inputSequence, T outputSequence) {
+    public boolean accept(CharacterIterator inputSequence, List<Command> outputSequence) throws DeadLockException {
 
-        FSMFactoryImpl factory = new FSMFactoryImpl();
+        Optional<List<Command>> possibleCommands = factory.create(
+                FSMFactory.TypeFSM.EXPRESSION_WITH_BRACKETS)
+                .execute(inputSequence);
 
-        try {
+        boolean isSuccess = possibleCommands.isPresent();
 
-            Optional<List<Command>> possibleCommands = factory.create(
-                    FSMFactory.TypeFSM.EXPRESSION_WITH_BRACKETS)
-                                                              .execute(inputSequence);
+        if (isSuccess) {
+            outputSequence.add((environment) -> {
 
-            boolean isSuccess = possibleCommands.isPresent();
+                for (Command command : possibleCommands.get()) {
+                    command.execute(environment);
+                }
 
-            if (isSuccess) {
-                outputSequence.add((environment) -> {
+                ValueHolder resultHolder = environment.topStack().getResult();
 
-                    for (Command command : possibleCommands.get()) {
-                        command.execute(environment);
-                    }
 
-                    Optional<ValueHolder> possibleResult = environment.topStack()
-                                                                      .getResult();
-
-                    if (possibleResult.isPresent()) {
-
-                        ValueHolder resultHolder = possibleResult.get();
-
-                        environment.topStack()
-                                   .pushOperand(resultHolder);
-                    }
-                });
-            }
-
-            return isSuccess;
-
-        } catch (IncorrectFormatOfExpressionException ex) {
-            ex.getCause();
+                environment.topStack().pushOperand(resultHolder);
+            });
         }
 
-        return false;
+        return isSuccess;
     }
 }

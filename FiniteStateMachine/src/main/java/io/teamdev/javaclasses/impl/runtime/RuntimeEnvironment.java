@@ -4,7 +4,6 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 public class RuntimeEnvironment {
     private boolean isInitializing = false;
@@ -62,13 +61,13 @@ public class RuntimeEnvironment {
 
     }
 
-    public ValueHolder value(String variable) {
+    public ValueHolder value(String variable) throws InitializationException {
         if (memory.memory.containsKey(variable)) {
 
             return memory.memory.get(variable);
         }
 
-        throw new NoSuchElementException("Variable " + variable + " has not been initialization");
+        throw new InitializationException("Variable " + variable + " has not been initialization");
     }
 
 

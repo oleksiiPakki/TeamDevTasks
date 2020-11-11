@@ -1,9 +1,9 @@
 package io.teamdev.javaclasses.impl.fsm;
 
-import io.teamdev.javaclasses.impl.abstractfactory.FSMFactory;
-import io.teamdev.javaclasses.impl.abstractfactory.FSMFactoryImpl;
-import io.teamdev.javaclasses.impl.runtime.DoubleValueHolder;
-import org.apache.log4j.Logger;
+import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
+import io.teamdev.javaclasses.impl.abstracts.FSMFactory;
+import io.teamdev.javaclasses.impl.abstracts.State;
+import io.teamdev.javaclasses.impl.runtime.Command;
 
 import java.text.CharacterIterator;
 import java.util.List;
@@ -12,20 +12,19 @@ import java.util.Optional;
 /**
  * Implementation of State.
  * Fsm being on this state when it finds a number, represented by string
- *
- * @param <T>
- *         define the class, representing the result of execution on this state
+ * <p>
+ * define the class, representing the result of execution on this state
  */
-public class NumberState<T extends List<Command>> extends State<T> {
-
-    private static final Logger logger = Logger.getLogger(NumberState.class);
+public class NumberState extends State<List<Command>> {
 
     private final boolean mayBeFinish;
     private final boolean isLexeme;
+    private final FSMFactory factory;
 
-    NumberState(boolean mayBeFinish, boolean isLexeme) {
-        this.mayBeFinish = mayBeFinish;
-        this.isLexeme = isLexeme;
+    NumberState(FSMFactory factory) {
+        this.mayBeFinish = true;
+        this.isLexeme = true;
+        this.factory = factory;
     }
 
     /**
@@ -44,36 +43,24 @@ public class NumberState<T extends List<Command>> extends State<T> {
     /**
      * Define a single number in math expression, and push it into shunting yard
      *
-     * @param inputSequence
-     *         String, contains math expression
-     * @param outputSequence
-     *         Shunting yard with the result of being fsm on this state
+     * @param inputSequence  String, contains math expression
+     * @param outputSequence Shunting yard with the result of being fsm on this state
      * @return Whether fsm being on this state or not
      */
     @Override
-    public boolean accept(CharacterIterator inputSequence, T outputSequence) {
+    public boolean accept(CharacterIterator inputSequence, List<Command> outputSequence) throws DeadLockException {
 
-        FSMFactoryImpl factory = new FSMFactoryImpl();
 
-        try {
+        Optional<List<Command>> possibleCommands = factory.create(FSMFactory.TypeFSM.NUMBER)
+                .execute(inputSequence);
 
-            Optional<List<Command>> possibleCommands = factory.create(FSMFactory.TypeFSM.NUMBER)
-                                                              .execute(inputSequence);
+        if (possibleCommands.isPresent()) {
 
-            if (possibleCommands.isPresent()) {
+            List<Command> commands = possibleCommands.get();
 
-                List<Command> commands = possibleCommands.get();
+            outputSequence.addAll(commands);
 
-                outputSequence.addAll(commands);
-
-                return true;
-            }
-
-            return false;
-
-        } catch (IncorrectFormatOfExpressionException ex) {
-
-            ex.getCause();
+            return true;
         }
 
         return false;

@@ -1,16 +1,17 @@
 package io.teamdev.javaclasses.calculatortests;
 
 import io.teamdev.javaclasses.calculator.MathExpressionCalculator;
-import io.teamdev.javaclasses.impl.fsm.IncorrectFormatOfExpressionException;
-import io.teamdev.javaclasses.impl.math.WrongCountOfArgumentsException;
-import io.teamdev.javaclasses.impl.runtime.ValueHolder;
+import io.teamdev.javaclasses.impl.abstracts.IncorrectFormatOfExpressionException;
+import io.teamdev.javaclasses.impl.runtime.ProgramExecutionException;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test for API MathCalculator.
@@ -20,64 +21,115 @@ class MathExpressionCalculatorTest {
 
     private final MathExpressionCalculator mathCalculator = new MathExpressionCalculator();
 
+
     @ParameterizedTest
-    @CsvSource({"123,123.0", "0.0,0.0", "67.89,67.89", "-98.098,-98.098"})
-    void testCorrectEvaluationOfNumber(String input, double expected)
-            throws IncorrectFormatOfExpressionException {
+    @MethodSource("ExpressionWithBrackets")
+    void testCorrectEvaluationOfExpressionWithBrackets(String input, String expected)
+            throws IncorrectFormatOfExpressionException, ProgramExecutionException {
 
-        ValueHolder resultHolder = mathCalculator.evaluate(input).get();
+        assertOutputValue(input, expected, "Expression with brackets is failed");
+    }
 
-        assertWithMessage("Evaluation of number is failed.")
-                .that(resultHolder.value())
-                .isEqualTo(expected);
+    private static Stream<Arguments> ExpressionWithBrackets() {
+        return Stream.of(
+                Arguments.of("2 * (5 + 7 * (4 + 1)) + 20", "100.0"),
+                Arguments.of("(2 + 1) * (-2) ", "-6.0"),
+                Arguments.of("4 * (0.1 * 100) + 12", "52.0")
+
+        );
     }
 
     @ParameterizedTest
-    @CsvSource({"7 + 2.25 / 2.25 + 3, 11.0", "1 + 4/2.5 * 5-2.5 + 1 * (-2), 4.5", "5.01 - 7 * 8 / 2 - 11.01, -34.0"})
-    void testCorrectEvaluationOfExpression(String input, double expected)
-            throws IncorrectFormatOfExpressionException {
+    @MethodSource("ExpressionWithFunctions")
+    void testCorrectEvaluationOfExpressionWithFunctions(String input, String expected)
+            throws IncorrectFormatOfExpressionException, ProgramExecutionException {
 
-        ValueHolder resultHolder = mathCalculator.evaluate(input).get();
+        assertOutputValue(input, expected, "Expression with functions is failed");
+    }
 
-        assertWithMessage("Evaluation of number is failed.")
-                .that(resultHolder.value())
-                .isEqualTo(expected);
+    private static Stream<Arguments> ExpressionWithFunctions() {
+        return Stream.of(
+                Arguments.of("min(max(-5,-6,-7), 2, 3 ) + max(1,2,3) * pow(2,3)", "19.0"),
+                Arguments.of("sum(1, 2, 3)", "6.0")
+
+        );
     }
 
     @ParameterizedTest
-    @CsvSource({"2 * (5 + 7 * (4 + 1)) + 20, 100.0", "(2 + 1) * (-2), -6.0,", "4 * (0.1 * 100) + 12, 52.0"})
-    void testCorrectEvaluationOfExpressionWithBrackets(String input, double expected)
-            throws IncorrectFormatOfExpressionException {
+    @MethodSource("BooleanExpression")
+    void testCorrectEvaluationOfBooleanExpression(String input, String expected)
+            throws IncorrectFormatOfExpressionException, ProgramExecutionException {
 
-        ValueHolder resultHolder = mathCalculator.evaluate(input).get();
+        assertOutputValue(input, expected, "Boolean expression is failed");
+    }
 
-        assertWithMessage("Evaluation of number is failed.")
-                .that(resultHolder.value())
-                .isEqualTo(expected);
+    private static Stream<Arguments> BooleanExpression() {
+        return Stream.of(
+                Arguments.of("PI() >= PI()", "true"),
+                Arguments.of("max(max(4,10)) < min(2+2,3+3) * 2", "false")
+
+        );
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"min( max(-5,-6,-7), 2, 3 ) + max(1,2,3) * pow(2,3) : 19.0", "sum(1, 2, 3) : 6.0"}, delimiter = ':')
-    void testCorrectEvaluationOfExpressionWithFunctions(String input, double expected)
-            throws IncorrectFormatOfExpressionException {
+    @MethodSource("parsingExpressionNegativeTestCase")
+    void testEvaluationOfIncorrectFormatExpression(String input, String expected) {
 
-        ValueHolder resultHolder = mathCalculator.evaluate(input).get();
+        assertIncorrectFormatException(input, expected);
+    }
 
-        assertWithMessage("Evaluation of number is failed.")
-                .that(resultHolder.value())
-                .isEqualTo(expected);
+    private static Stream<Arguments> parsingExpressionNegativeTestCase() {
+        return Stream.of(
+                Arguments.of("123error", "Deadlock on 3 position"),
+                Arguments.of("3 + 2 */ 1", "Deadlock on 7 position"),
+                Arguments.of("*34 - 5", "Deadlock on 0 position"),
+                Arguments.of("35 - 7 + 9)", "Deadlock on 10 position")
+
+        );
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"3 > 2 : true", "max(max(4,10)) < min(2+2,3+3) * 2 : false"}, delimiter = ':')
-    void testCorrectEvaluationOfBooleanExpression(String input, boolean expected)
-            throws IncorrectFormatOfExpressionException {
+    @MethodSource("executionExpressionNegativeTestCase")
+    void testEvaluationOfIncorrectExpression(String input, String expected) {
 
-        ValueHolder resultHolder = mathCalculator.evaluate(input).get();
+        assertExecutionException(input, expected);
+    }
 
-        assertWithMessage("Evaluation of number is failed.")
-                .that(resultHolder.value())
+    private static Stream<Arguments> executionExpressionNegativeTestCase() {
+        return Stream.of(
+                Arguments.of("PI(1) >= PI()", "PI function must contains no elements"),
+                Arguments.of("max() + 3", "Max function must contain at least one argument"),
+                Arguments.of("pow(1,2,3)", "Pow function must contains only two arguments")
+
+        );
+    }
+
+    private void assertOutputValue(String input, String expected, String message)
+            throws IncorrectFormatOfExpressionException, ProgramExecutionException {
+
+        String resultOfExecution = mathCalculator.evaluate(input);
+
+        assertWithMessage(message)
+                .that(resultOfExecution)
                 .isEqualTo(expected);
+    }
+
+    private void assertIncorrectFormatException(String program, String expectedMassage) {
+
+        IncorrectFormatOfExpressionException ex =
+                assertThrows(IncorrectFormatOfExpressionException.class, () ->
+                        mathCalculator.evaluate(program));
+        assertThat(ex).hasMessageThat()
+                .contains(expectedMassage);
+    }
+
+    private void assertExecutionException(String program, String expectedMassage) {
+
+        ProgramExecutionException ex =
+                assertThrows(ProgramExecutionException.class, () ->
+                        mathCalculator.evaluate(program));
+        assertThat(ex).hasMessageThat()
+                .contains(expectedMassage);
     }
 
 

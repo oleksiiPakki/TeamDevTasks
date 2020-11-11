@@ -1,12 +1,7 @@
 package io.teamdev.javaclasses.impl.fsm;
 
-import io.teamdev.javaclasses.impl.math.BooleanBinaryOperator;
-import io.teamdev.javaclasses.impl.math.EqualsToBinaryOperator;
-import io.teamdev.javaclasses.impl.math.GreaterThanBinaryOperator;
-import io.teamdev.javaclasses.impl.math.GreaterThanOrEqualsToBinaryOperator;
-import io.teamdev.javaclasses.impl.math.LessThanBinaryOperator;
-import io.teamdev.javaclasses.impl.math.LessThanOrEqualsToBinaryOperator;
-import io.teamdev.javaclasses.impl.math.NotEqualsToBinaryOperator;
+import io.teamdev.javaclasses.impl.abstracts.State;
+import io.teamdev.javaclasses.impl.runtime.*;
 
 import java.text.CharacterIterator;
 import java.util.HashMap;
@@ -14,16 +9,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class BooleanBinaryOperatorState<T extends List<Command>> extends State<T> {
+public class BooleanBinaryOperatorState extends State<List<Command>> {
 
     private final boolean mayBeFinish;
     private final boolean isLexeme;
 
-    private final Map<String, BooleanBinaryOperator<Double>> operators = new HashMap<>();
+    private final Map<String, BooleanBinaryOperator> operators = new HashMap<>();
 
-    BooleanBinaryOperatorState(boolean mayBeFinish, boolean isLexeme) {
-        this.mayBeFinish = mayBeFinish;
-        this.isLexeme = isLexeme;
+    BooleanBinaryOperatorState() {
+        this.mayBeFinish = false;
+        this.isLexeme = true;
     }
 
     {
@@ -49,9 +44,6 @@ public class BooleanBinaryOperatorState<T extends List<Command>> extends State<T
             this.sign = sign;
         }
 
-        public Character containingChar() {
-            return sign;
-        }
     }
 
     @Override
@@ -65,7 +57,7 @@ public class BooleanBinaryOperatorState<T extends List<Command>> extends State<T
     }
 
     @Override
-    public boolean accept(CharacterIterator inputSequence, T outputSequence) {
+    public boolean accept(CharacterIterator inputSequence, List<Command> outputSequence) {
 
         StringBuilder possibleNameOfOperator = new StringBuilder();
 
@@ -76,7 +68,7 @@ public class BooleanBinaryOperatorState<T extends List<Command>> extends State<T
             inputSequence.next();
         }
 
-        Optional<BooleanBinaryOperator<Double>> currentOperator = defineBinaryOperator(
+        Optional<BooleanBinaryOperator> currentOperator = defineBinaryOperator(
                 possibleNameOfOperator.toString());
 
         if (currentOperator.isPresent()) {
@@ -92,7 +84,7 @@ public class BooleanBinaryOperatorState<T extends List<Command>> extends State<T
         return false;
     }
 
-    private Optional<BooleanBinaryOperator<Double>> defineBinaryOperator(
+    private Optional<BooleanBinaryOperator> defineBinaryOperator(
             String possibleNameOfOperator) {
 
         return operators.containsKey(possibleNameOfOperator) ? Optional.of(

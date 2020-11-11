@@ -1,9 +1,12 @@
 package io.teamdev.javaclasses.impl.fsm;
 
+import io.teamdev.javaclasses.impl.abstracts.State;
+import io.teamdev.javaclasses.impl.runtime.Command;
+
 import java.text.CharacterIterator;
 import java.util.List;
 
-public class OpeningBracketForExpressionState<T extends List<Command>> extends State<T> {
+public class OpeningBracketForExpressionState extends State<List<Command>> {
     private final boolean mayBeFinish;
     private final boolean isLexeme;
     private final Character requiredCharacter;
@@ -25,7 +28,7 @@ public class OpeningBracketForExpressionState<T extends List<Command>> extends S
     }
 
     @Override
-    public boolean accept(CharacterIterator inputSequence, T outputSequence) {
+    public boolean accept(CharacterIterator inputSequence, List<Command> outputSequence) {
         Character currentCharacter = inputSequence.current();
 
         if (requiredCharacter.equals(currentCharacter)) {

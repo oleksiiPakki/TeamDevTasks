@@ -1,12 +1,7 @@
-package io.teamdev.javaclasses.impl.math;
-
-import io.teamdev.javaclasses.impl.fsm.Command;
-import io.teamdev.javaclasses.impl.fsm.IncorrectFormatOfExpressionException;
-import io.teamdev.javaclasses.impl.runtime.*;
+package io.teamdev.javaclasses.impl.runtime;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class FunctionStructure {
 
@@ -22,21 +17,17 @@ public class FunctionStructure {
     }
 
     public void execute(RuntimeEnvironment environment) throws
-                                                        IncorrectFormatOfExpressionException {
+            ProgramExecutionException {
         List<ValueHolder> arguments = new ArrayList<>();
 
         for (Command command : evaluatingArguments) {
             command.execute(environment);
 
-            Optional<ValueHolder> possibleResult = environment.closeTopStack()
-                                                              .getResult();
+            ValueHolder possibleResult = environment.closeTopStack()
+                    .getResult();
 
-            if (possibleResult.isPresent()) {
 
-                ValueHolder resultHolder = possibleResult.get();
-
-                arguments.add(resultHolder);
-            }
+            arguments.add(possibleResult);
         }
 
         currentFunction.execute(environment, arguments);

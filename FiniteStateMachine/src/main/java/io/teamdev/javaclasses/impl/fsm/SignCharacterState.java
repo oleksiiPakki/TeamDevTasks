@@ -1,5 +1,6 @@
 package io.teamdev.javaclasses.impl.fsm;
 
+import io.teamdev.javaclasses.impl.abstracts.State;
 import org.apache.log4j.Logger;
 
 import java.text.CharacterIterator;
@@ -34,7 +35,7 @@ public class SignCharacterState extends State<StringBuilder> {
         Character currentCharacter = inputSequence.current();
 
         if (currentCharacter.equals(requiredCharacter)) {
-            if (logger.isTraceEnabled()){
+            if (logger.isTraceEnabled()) {
                 logger.trace("Fsm in a SignCharacterState:" + inputSequence.current() + "\n");
 
             }

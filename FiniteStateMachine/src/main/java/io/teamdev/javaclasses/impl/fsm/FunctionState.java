@@ -1,21 +1,24 @@
 package io.teamdev.javaclasses.impl.fsm;
 
-import io.teamdev.javaclasses.impl.abstractfactory.FSMFactory;
-import io.teamdev.javaclasses.impl.abstractfactory.FSMFactoryImpl;
-import io.teamdev.javaclasses.impl.math.FunctionStructure;
-import io.teamdev.javaclasses.impl.runtime.RuntimeEnvironment;
+import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
+import io.teamdev.javaclasses.impl.abstracts.FSMFactory;
+import io.teamdev.javaclasses.impl.abstracts.State;
+import io.teamdev.javaclasses.impl.runtime.Command;
 
 import java.text.CharacterIterator;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
-public class FunctionState<T extends List<Command>> extends State<T> {
+public class FunctionState extends State<List<Command>> {
 
     private final boolean mayBeFinish;
     private final boolean isLexeme;
+    private final FSMFactory factory;
 
-    FunctionState(boolean mayBeFinish, boolean isLexeme) {
-        this.mayBeFinish = mayBeFinish;
-        this.isLexeme = isLexeme;
+    FunctionState(FSMFactory factory) {
+        this.mayBeFinish = true;
+        this.isLexeme = true;
+        this.factory = factory;
     }
 
     @Override
@@ -29,35 +32,22 @@ public class FunctionState<T extends List<Command>> extends State<T> {
     }
 
     @Override
-    public boolean accept(CharacterIterator inputSequence, T outputSequence) {
-
-        FSMFactoryImpl factory = new FSMFactoryImpl();
-        try {
+    public boolean accept(CharacterIterator inputSequence, List<Command> outputSequence) throws DeadLockException {
 
             Optional<List<Command>> possibleCommands = factory.create(
-                    FSMFactory.TypeFSM.FUNCTION)
-                                                              .execute(inputSequence);
+                    FSMFactory.TypeFSM.FUNCTION).execute(inputSequence);
 
             boolean isSuccess = possibleCommands.isPresent();
 
             if (isSuccess) {
-                outputSequence.add(new Command() {
-                    @Override
-                    public void execute(RuntimeEnvironment environment) throws
-                                                                        IncorrectFormatOfExpressionException {
-                        for (Command command : possibleCommands.get()) {
-                            command.execute(environment);
-                        }
+                outputSequence.add(environment -> {
+
+                    for (Command command : possibleCommands.get()) {
+                        command.execute(environment);
                     }
                 });
             }
 
             return isSuccess;
-
-        } catch (IncorrectFormatOfExpressionException ex) {
-            ex.getCause();
-        }
-
-        return false;
     }
 }

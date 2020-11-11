@@ -1,14 +1,15 @@
 package io.teamdev.javaclasses.calculator;
 
-import io.teamdev.javaclasses.impl.fsm.BooleanExpressionFiniteStateMachine;
-import io.teamdev.javaclasses.impl.fsm.IncorrectFormatOfExpressionException;
-import io.teamdev.javaclasses.impl.fsm.Command;
+import io.teamdev.javaclasses.impl.abstracts.FSMFactory;
+import io.teamdev.javaclasses.impl.fsm.FSMFactoryImpl;
+import io.teamdev.javaclasses.impl.abstracts.IncorrectFormatOfExpressionException;
+import io.teamdev.javaclasses.impl.runtime.Command;
+import io.teamdev.javaclasses.impl.runtime.ProgramExecutionException;
 import io.teamdev.javaclasses.impl.runtime.RuntimeEnvironment;
 import io.teamdev.javaclasses.impl.runtime.ValueHolder;
 import org.apache.log4j.Logger;
 
 import java.text.StringCharacterIterator;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,48 +24,53 @@ public class MathExpressionCalculator {
     private static final Logger logger = Logger.getLogger(MathExpressionCalculator.class);
 
     /**
-     * @param mathExpression
-     *         String, consisting of a set of numbers, binary operators and functions
-
-     *  @throws IncorrectFormatOfExpressionException
+     * @param mathExpression String, consisting of a set of numbers, binary operators and functions
+     * @throws IncorrectFormatOfExpressionException throws when we have mistakes in expression, such a:
+     *                                              -Binary operators, following to each others
+     *                                              -Incorrect brackets sequence
+     *                                              -
      */
-    public Optional<ValueHolder> evaluate(String mathExpression) throws
-                                                                 IncorrectFormatOfExpressionException {
+    public String evaluate(String mathExpression) throws
+            IncorrectFormatOfExpressionException, ProgramExecutionException {
         if (logger.isInfoEnabled()) {
             logger.info("Evaluating started" + "\n");
         }
-        List<Command> commands = new ArrayList<>();
 
         StringCharacterIterator inputChain = new StringCharacterIterator(mathExpression);
 
-        boolean isSuccess = new BooleanExpressionFiniteStateMachine().run(inputChain, commands);
-        boolean isEndOfInput = (inputChain.getIndex() == inputChain.getEndIndex());
+        FSMFactoryImpl factory = new FSMFactoryImpl();
 
-        if ((isSuccess) && (isEndOfInput)) {
-            RuntimeEnvironment environment = new RuntimeEnvironment();
+        Optional<List<Command>> commands = factory.create(FSMFactory.TypeFSM.BOOLEAN_EXPRESSION).execute(inputChain);
 
-            environment.startNewStack();
+        if (commands.isPresent()) {
+            boolean isEndOfInput = (inputChain.getIndex() == inputChain.getEndIndex());
 
-            for (Command command : commands) {
-                command.execute(environment);
-            }
+            if (isEndOfInput) {
+                RuntimeEnvironment environment = new RuntimeEnvironment();
 
-            Optional<ValueHolder> possibleResult = environment.closeTopStack()
-                                                              .getResult();
+                environment.startNewStack();
 
-            if (possibleResult.isPresent()) {
+                for (Command command : commands.get()) {
+                    command.execute(environment);
+                }
 
-                ValueHolder resultHolder = possibleResult.get();
+                ValueHolder resultHolder = environment.closeTopStack()
+                        .getResult();
 
                 if (logger.isInfoEnabled()) {
                     logger.info("Evaluating finished successful" + "\n");
                 }
 
-                return Optional.of(resultHolder);
+                return resultHolder.toString();
 
             }
+
+
         }
 
-        return Optional.empty();
+        throw new IncorrectFormatOfExpressionException("Deadlock on " + inputChain.getIndex() + " position");
     }
 }
+
+
+

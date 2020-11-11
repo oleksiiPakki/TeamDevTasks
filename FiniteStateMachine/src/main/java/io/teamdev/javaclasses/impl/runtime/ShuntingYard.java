@@ -1,9 +1,7 @@
 package io.teamdev.javaclasses.impl.runtime;
 
-import io.teamdev.javaclasses.impl.fsm.IncorrectBracketsExpressionException;
-import io.teamdev.javaclasses.impl.math.BinaryOperator;
-
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class ShuntingYard {
 
@@ -61,18 +59,15 @@ public class ShuntingYard {
     /**
      * @return result of execution
      */
-    public Optional<ValueHolder> getResult() throws IncorrectBracketsExpressionException {
+    public ValueHolder getResult() {
 
-        if (countOfBracketsDiscrepancy != 0) {
-            throw new IncorrectBracketsExpressionException("Incorrect brackets expression");
-        }
 
         while (!binaryOperators.isEmpty()) {
 
             popTopOperator();
         }
 
-        return Optional.of(operands.pop());
+        return operands.pop();
     }
 
     private void popTopOperator() {
@@ -81,9 +76,7 @@ public class ShuntingYard {
 
         BinaryOperator binaryOperator = binaryOperators.pop();
 
-        ValueHolder result;
-
-        result = binaryOperator.execute(leftOperand, rightOperand);
+        ValueHolder result = binaryOperator.execute(leftOperand, rightOperand);
 
         if (result != null) {
             operands.push(result);

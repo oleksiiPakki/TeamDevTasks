@@ -1,16 +1,23 @@
 package io.teamdev.javaclasses.impl.fsm;
 
-import java.text.CharacterIterator;
-import java.util.ArrayList;
-import java.util.List;
+import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
+import io.teamdev.javaclasses.impl.runtime.Command;
+import io.teamdev.javaclasses.impl.abstracts.FSMFactory;
+import io.teamdev.javaclasses.impl.abstracts.State;
 
-public class InitVariableState<T extends List<Command>> extends State<T> {
+import java.text.CharacterIterator;
+import java.util.List;
+import java.util.Optional;
+
+public class InitVariableState extends State<List<Command>> {
     private final boolean mayBeFinish;
     private final boolean isLexeme;
+    private final FSMFactory factory;
 
-    InitVariableState(boolean mayBeFinish, boolean isLexeme) {
-        this.mayBeFinish = mayBeFinish;
-        this.isLexeme = isLexeme;
+    InitVariableState(FSMFactory factory) {
+        this.mayBeFinish = true;
+        this.isLexeme = true;
+        this.factory = factory;
     }
 
     @Override
@@ -24,34 +31,31 @@ public class InitVariableState<T extends List<Command>> extends State<T> {
     }
 
     @Override
-    public boolean accept(CharacterIterator inputSequence, T outputSequence) {
+    public boolean accept(CharacterIterator inputSequence, List<Command> outputSequence) throws DeadLockException {
         int currentPosition = inputSequence.getIndex();
 
-        try{
 
-            List<Command> commands = new ArrayList<>();
+        Optional<List<Command>> possibleCommands =
+                factory.create(FSMFactory.TypeFSM.INITIALIZATION).execute(inputSequence);
 
-            boolean isSuccess = new InitVariableFiniteStateMachine<>().run(inputSequence, commands);
+        boolean isSuccess = possibleCommands.isPresent();
 
-            if (isSuccess){
+        if (isSuccess) {
 
-                outputSequence.add(environment -> {
+            outputSequence.add(environment -> {
 
-                    for (Command command : commands){
+                for (Command command : possibleCommands.get()) {
 
-                        command.execute(environment);
-                    }
+                    command.execute(environment);
+                }
 
-                    environment.initialize();
-                });
-            }
-
-            return isSuccess;
-
-        }catch (IncorrectFormatOfExpressionException ex){
+                environment.initialize();
+            });
+        } else {
             inputSequence.setIndex(currentPosition);
-            ex.getCause();
         }
-        return false;
+
+        return isSuccess;
+
     }
 }

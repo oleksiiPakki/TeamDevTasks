@@ -1,7 +1,11 @@
 package io.teamdev.javaclasses.impl.fsm;
 
-import io.teamdev.javaclasses.impl.math.FunctionStructure;
-import io.teamdev.javaclasses.impl.runtime.RuntimeEnvironment;
+import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
+import io.teamdev.javaclasses.impl.abstracts.FSMFactory;
+import io.teamdev.javaclasses.impl.abstracts.FiniteStateMachine;
+import io.teamdev.javaclasses.impl.abstracts.State;
+import io.teamdev.javaclasses.impl.runtime.Command;
+import io.teamdev.javaclasses.impl.runtime.FunctionStructure;
 
 import java.text.CharacterIterator;
 import java.util.ArrayList;
@@ -11,11 +15,11 @@ import java.util.Optional;
 
 public class FunctionFiniteStateMachine extends FiniteStateMachine<FunctionStructure> {
 
-    public FunctionFiniteStateMachine() {
+    public FunctionFiniteStateMachine(FSMFactory factory) {
 
-        State<FunctionStructure> nameState = new NameForFunctionState<>(false, false);
+        State<FunctionStructure> nameState = new NameForFunctionState(false, false);
         State<FunctionStructure> openingBracketForFunctionState = new TransitState<>(false, true, '(');
-        State<FunctionStructure> argumentState = new ArgumentState<>(false, true);
+        State<FunctionStructure> argumentState = new ArgumentState(factory);
         State<FunctionStructure> commaState = new TransitState<>(false, true, ',');
         State<FunctionStructure> closingBracketState = new TransitState<>(true, true, ')');
 
@@ -29,18 +33,18 @@ public class FunctionFiniteStateMachine extends FiniteStateMachine<FunctionStruc
 
         commaState.addTransition(argumentState);
 
-        setStartedStates(Collections.singletonList(nameState));
+        addStartedStates(Collections.singletonList(nameState));
 
     }
 
     @Override
-    public Optional<List<Command>> execute(CharacterIterator inputSequence) {
+    public Optional<List<Command>> execute(CharacterIterator inputSequence) throws DeadLockException {
+
         return function(inputSequence);
     }
 
-    public Optional<List<Command>> function(CharacterIterator inputSequence) {
+    public Optional<List<Command>> function(CharacterIterator inputSequence) throws DeadLockException {
 
-        try {
             FunctionStructure functionStructure = new FunctionStructure();
 
             boolean isSuccess = run(inputSequence, functionStructure);
@@ -49,14 +53,11 @@ public class FunctionFiniteStateMachine extends FiniteStateMachine<FunctionStruc
 
                 List<Command> commands = new ArrayList<>();
 
-                commands.add(environment -> functionStructure.execute(environment));
+                commands.add(functionStructure::execute);
 
                 return Optional.of(commands);
             }
 
-        } catch (IncorrectFormatOfExpressionException ex) {
-            ex.getCause();
-        }
 
         return Optional.empty();
     }

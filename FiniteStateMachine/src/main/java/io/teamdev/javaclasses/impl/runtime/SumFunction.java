@@ -1,9 +1,4 @@
-package io.teamdev.javaclasses.impl.math;
-
-import io.teamdev.javaclasses.impl.runtime.DoubleValueHolder;
-import io.teamdev.javaclasses.impl.runtime.DoubleValueReader;
-import io.teamdev.javaclasses.impl.runtime.RuntimeEnvironment;
-import io.teamdev.javaclasses.impl.runtime.ValueHolder;
+package io.teamdev.javaclasses.impl.runtime;
 
 import java.util.List;
 

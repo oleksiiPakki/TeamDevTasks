@@ -1,7 +1,4 @@
-package io.teamdev.javaclasses.impl.math;
-
-import io.teamdev.javaclasses.impl.runtime.RuntimeEnvironment;
-import io.teamdev.javaclasses.impl.runtime.ValueHolder;
+package io.teamdev.javaclasses.impl.runtime;
 
 import java.util.List;
 
@@ -12,9 +9,11 @@ public class PrintFunction implements Function {
 
         for (ValueHolder argument : arguments){
 
-            environment.output().append(argument.value());
+            environment.output().append(argument.toString()).append(",");
         }
-    }
 
+        environment.output().deleteCharAt(environment.output().length() - 1);
+
+    }
 
 }

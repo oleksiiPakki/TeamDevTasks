@@ -1,9 +1,13 @@
 package io.teamdev.javaclasses.impl.fsm;
 
+import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
+import io.teamdev.javaclasses.impl.abstracts.State;
+import io.teamdev.javaclasses.impl.runtime.Command;
+
 import java.text.CharacterIterator;
 import java.util.List;
 
-public class NameForVariableState<T extends List<Command>> extends State<T> {
+public class NameForVariableState extends State<List<Command>> {
     private final boolean mayBeFinish;
     private final boolean isLexeme;
 
@@ -23,38 +27,34 @@ public class NameForVariableState<T extends List<Command>> extends State<T> {
     }
 
     @Override
-    public boolean accept(CharacterIterator inputSequence, T outputSequence) {
+    public boolean accept(CharacterIterator inputSequence, List<Command> outputSequence) throws DeadLockException {
         char currentCharacter = inputSequence.current();
 
         if (Character.isLetter(currentCharacter)) {
 
-            try {
+            StringBuilder possibleNameOfVariable = new StringBuilder();
 
-                StringBuilder possibleNameOfVariable = new StringBuilder();
+            int positionBeforeParsingNameOfVariable = inputSequence.getIndex();
 
-                int positionBeforeParsingNameOfVariable = inputSequence.getIndex();
+            boolean isSuccess = new NameFiniteStateMachine().run(inputSequence, possibleNameOfVariable);
 
-                boolean isSuccess = new NameFiniteStateMachine().run(inputSequence, possibleNameOfVariable);
+            if (isSuccess) {
 
-                if (isSuccess) {
+                if (inputSequence.current() == '(') {
 
-                    if (inputSequence.current() == '('){
+                    inputSequence.setIndex(positionBeforeParsingNameOfVariable);
 
-                        inputSequence.setIndex(positionBeforeParsingNameOfVariable);
-
-                        return false;
-                    }
-
-                    outputSequence.add(
-                            environment -> environment.keepVariable(possibleNameOfVariable.toString()));
+                    return false;
                 }
 
-                return isSuccess;
-
-            } catch (IncorrectFormatOfExpressionException ex) {
-                ex.getCause();
+                outputSequence.add(
+                        environment -> environment.keepVariable(possibleNameOfVariable.toString()));
             }
+
+            return isSuccess;
+
         }
+
         return false;
     }
 }

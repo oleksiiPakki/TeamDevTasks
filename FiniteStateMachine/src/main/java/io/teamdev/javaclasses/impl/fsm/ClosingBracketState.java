@@ -1,25 +1,22 @@
 package io.teamdev.javaclasses.impl.fsm;
 
-import io.teamdev.javaclasses.impl.runtime.ShuntingYard;
-import io.teamdev.javaclasses.impl.runtime.DoubleValueHolder;
-import io.teamdev.javaclasses.impl.runtime.DoubleValueReader;
-import io.teamdev.javaclasses.impl.runtime.ValueHolder;
+import io.teamdev.javaclasses.impl.abstracts.State;
+import io.teamdev.javaclasses.impl.runtime.*;
 import org.apache.log4j.Logger;
 
 import java.text.CharacterIterator;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Implementation of {@link State}, fsm being in when we finding closed bracket after parameters of
  * function
- *
- * @param <T>
- *         Shunting yard{@link  ShuntingYard} contains intermediate result of execution of binary
- *         operations,
- *         considering priority of last ones
+ * <p>
+ * <p>
+ * Shunting yard{@link  ShuntingYard} contains intermediate result of execution of binary
+ * operations,
+ * considering priority of last ones
  */
-public class ClosingBracketState<T extends List<Command>> extends State<T> {
+public class ClosingBracketState extends State<List<Command>> {
 
     private static final Logger logger = Logger.getLogger(ClosingBracketState.class);
 
@@ -27,9 +24,9 @@ public class ClosingBracketState<T extends List<Command>> extends State<T> {
     private final boolean isLexeme;
     private final Character requiredCharacter;
 
-    ClosingBracketState(boolean mayBeFinish, boolean isLexeme, Character requiredCharacter) {
-        this.mayBeFinish = mayBeFinish;
-        this.isLexeme = isLexeme;
+    ClosingBracketState(Character requiredCharacter) {
+        this.mayBeFinish = true;
+        this.isLexeme = true;
         this.requiredCharacter = requiredCharacter;
     }
 
@@ -50,14 +47,12 @@ public class ClosingBracketState<T extends List<Command>> extends State<T> {
      * pushing closing bracket into a Shunting yard {@link ShuntingYard}, if current character is
      * ')'
      *
-     * @param inputSequence
-     *         String, contains math expression
-     * @param outputSequence
-     *         Shunting Yard,{@link ShuntingYard} consisting arguments of functions
+     * @param inputSequence  String, contains math expression
+     * @param outputSequence Shunting Yard,{@link ShuntingYard} consisting arguments of functions
      * @return true if current character is ')' or false if it is not
      */
     @Override
-    public boolean accept(CharacterIterator inputSequence, T outputSequence) {
+    public boolean accept(CharacterIterator inputSequence, List<Command> outputSequence) {
 
         Character currentCharacter = inputSequence.current();
 
@@ -68,19 +63,14 @@ public class ClosingBracketState<T extends List<Command>> extends State<T> {
 
             outputSequence.add(environment -> {
 
-                environment.topStack()
-                           .pushClosingBracket();
+                environment.topStack().pushClosingBracket();
 
-                Optional<ValueHolder> possibleResult = environment.closeTopStack()
-                                                                  .getResult();
+                ValueHolder resultHolder = environment.closeTopStack().getResult();
 
-                if (possibleResult.isPresent()) {
 
-                    double result = DoubleValueReader.readDouble(possibleResult.get());
+                double result = DoubleValueReader.readDouble(resultHolder);
 
-                    environment.topStack()
-                               .pushOperand(new DoubleValueHolder(result));
-                }
+                environment.topStack().pushOperand(new DoubleValueHolder(result));
             });
 
             inputSequence.next();

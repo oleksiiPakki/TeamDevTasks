@@ -1,10 +1,15 @@
 package io.teamdev.javaclasses.impl.fsm;
 
-import java.text.CharacterIterator;
-import java.util.ArrayList;
-import java.util.List;
+import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
+import io.teamdev.javaclasses.impl.runtime.Command;
+import io.teamdev.javaclasses.impl.abstracts.FSMFactory;
+import io.teamdev.javaclasses.impl.abstracts.State;
 
-public class StatementState<T extends List<Command>> extends State<T> {
+import java.text.CharacterIterator;
+import java.util.List;
+import java.util.Optional;
+
+public class StatementState extends State<List<Command>> {
 
     public final boolean mayBeFinish;
     private final boolean isLexeme;
@@ -26,26 +31,24 @@ public class StatementState<T extends List<Command>> extends State<T> {
     }
 
     @Override
-    public boolean accept(CharacterIterator inputSequence, T outputSequence) {
-        try {
+    public boolean accept(CharacterIterator inputSequence, List<Command> outputSequence) throws DeadLockException {
+            FSMFactory factory = new FSMFactoryImpl();
 
-            List<Command> commands = new ArrayList<>();
+            Optional<List<Command>> commands = factory.create(FSMFactory.TypeFSM.STATEMENT).execute(inputSequence);
 
-            boolean isSuccess = new StatementFiniteStateMachine<>().run(inputSequence, commands);
+            boolean isSuccess = commands.isPresent();
 
-            outputSequence.add(environment -> {
+            if (isSuccess) {
+                outputSequence.add(environment -> {
 
-                for (Command command : commands) {
-                    command.execute(environment);
-                }
-            });
+                    for (Command command : commands.get()) {
+                        command.execute(environment);
+                    }
+                });
+            }
 
             return isSuccess;
 
-        } catch (IncorrectFormatOfExpressionException ex) {
-            ex.getCause();
-        }
 
-        return false;
     }
 }

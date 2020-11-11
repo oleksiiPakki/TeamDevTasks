@@ -1,20 +1,15 @@
 package io.teamdev.javaclasses.impl.fsm;
 
-import io.teamdev.javaclasses.impl.math.Function;
-import io.teamdev.javaclasses.impl.math.FunctionStructure;
-import io.teamdev.javaclasses.impl.math.MaxFunction;
-import io.teamdev.javaclasses.impl.math.MinFunction;
-import io.teamdev.javaclasses.impl.math.PiFunction;
-import io.teamdev.javaclasses.impl.math.PowerFunction;
-import io.teamdev.javaclasses.impl.math.PrintFunction;
-import io.teamdev.javaclasses.impl.math.SumFunction;
+import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
+import io.teamdev.javaclasses.impl.abstracts.State;
+import io.teamdev.javaclasses.impl.runtime.*;
 
 import java.text.CharacterIterator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class NameForFunctionState<T extends FunctionStructure> extends State<T> {
+public class NameForFunctionState extends State<FunctionStructure> {
 
     private final boolean mayBeFinish;
     private final boolean isLexeme;
@@ -46,50 +41,49 @@ public class NameForFunctionState<T extends FunctionStructure> extends State<T> 
     }
 
     @Override
-    public boolean accept(CharacterIterator inputSequence, T outputSequence) {
+    public boolean accept(CharacterIterator inputSequence, FunctionStructure outputSequence) throws DeadLockException {
         char currentCharacter = inputSequence.current();
 
         if (Character.isLetter(currentCharacter)) {
 
-            try {
-                StringBuilder possibleNameOfFunction = new StringBuilder();
 
-                int positionBeforeParsingNameOfFunction = inputSequence.getIndex();
+            StringBuilder possibleNameOfFunction = new StringBuilder();
 
-                boolean isSuccess = new NameFiniteStateMachine().run(inputSequence,
-                                                                              possibleNameOfFunction);
+            int positionBeforeParsingNameOfFunction = inputSequence.getIndex();
 
-                if (isSuccess) {
+            boolean isSuccess = new NameFiniteStateMachine().run(inputSequence,
+                    possibleNameOfFunction);
 
-                    Optional<Function> currentFunction = defineFunction(
-                            possibleNameOfFunction.toString());
+            if (isSuccess) {
 
-                    if ((currentFunction.isPresent()) && (inputSequence.current() == '(')) {
+                Optional<Function> currentFunction = defineFunction(
+                        possibleNameOfFunction.toString());
 
-                        outputSequence.setFunction(currentFunction.get());
+                if ((currentFunction.isPresent()) && (inputSequence.current() == '(')) {
 
-                    } else {
-                        inputSequence.setIndex(positionBeforeParsingNameOfFunction);
+                    outputSequence.setFunction(currentFunction.get());
 
-                        return false;
-                    }
+                } else {
+                    inputSequence.setIndex(positionBeforeParsingNameOfFunction);
 
+                    return false;
                 }
 
-                return isSuccess;
-
-            } catch (IncorrectFormatOfExpressionException ex) {
-                ex.getCause();
             }
+
+            return isSuccess;
+
         }
 
         return false;
+
     }
+
 
     private Optional<Function> defineFunction(String nameOfFunction) {
 
         return functions.containsKey(nameOfFunction) ? Optional.of(functions.get(nameOfFunction))
-                                                     : Optional.empty();
+                : Optional.empty();
     }
 
 }

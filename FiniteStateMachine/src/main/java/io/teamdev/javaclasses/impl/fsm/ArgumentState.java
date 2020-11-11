@@ -1,19 +1,25 @@
 package io.teamdev.javaclasses.impl.fsm;
 
-import io.teamdev.javaclasses.impl.math.FunctionStructure;
+import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
+import io.teamdev.javaclasses.impl.runtime.Command;
+import io.teamdev.javaclasses.impl.abstracts.FSMFactory;
+import io.teamdev.javaclasses.impl.abstracts.State;
+import io.teamdev.javaclasses.impl.runtime.FunctionStructure;
 
 import java.text.CharacterIterator;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class ArgumentState<T extends FunctionStructure> extends State<T> {
+public class ArgumentState extends State<FunctionStructure> {
 
     private final boolean mayBeFinish;
     private final boolean isLexeme;
+    private final FSMFactory factory;
 
-    ArgumentState(boolean mayBeFinish, boolean isLexeme) {
-        this.mayBeFinish = mayBeFinish;
-        this.isLexeme = isLexeme;
+    ArgumentState(FSMFactory factory) {
+        this.mayBeFinish = false;
+        this.isLexeme = true;
+        this.factory = factory;
     }
 
     @Override
@@ -27,30 +33,26 @@ public class ArgumentState<T extends FunctionStructure> extends State<T> {
     }
 
     @Override
-    public boolean accept(CharacterIterator inputSequence, T outputSequence) {
-        try {
-            List<Command> commands = new ArrayList<>();
+    public boolean accept(CharacterIterator inputSequence, FunctionStructure outputSequence) throws DeadLockException {
 
-            boolean isSuccess = new BooleanExpressionFiniteStateMachine().run(inputSequence,
-                                                                                commands);
+        Optional<List<Command>> possibleCommands =
+                factory.create(FSMFactory.TypeFSM.BOOLEAN_EXPRESSION).execute(inputSequence);
 
-            if (isSuccess) {
-                outputSequence.addEvaluatingArgument(environment -> {
-                    environment.startNewStack();
+        boolean isSuccess = possibleCommands.isPresent();
 
-                    for (Command command : commands) {
-                        command.execute(environment);
-                    }
-                });
+        if (isSuccess) {
+            outputSequence.addEvaluatingArgument(environment -> {
 
-            }
+                environment.startNewStack();
 
-            return isSuccess;
+                for (Command command : possibleCommands.get()) {
+                    command.execute(environment);
+                }
+            });
 
-        } catch (IncorrectFormatOfExpressionException ex) {
-            ex.getCause();
         }
 
-        return false;
+        return isSuccess;
+
     }
 }

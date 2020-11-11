@@ -1,21 +1,25 @@
 package io.teamdev.javaclasses.impl.fsm;
 
-import io.teamdev.javaclasses.impl.abstractfactory.FSMFactory;
-import io.teamdev.javaclasses.impl.abstractfactory.FSMFactoryImpl;
+import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
+import io.teamdev.javaclasses.impl.runtime.Command;
+import io.teamdev.javaclasses.impl.abstracts.FSMFactory;
+import io.teamdev.javaclasses.impl.abstracts.State;
 import io.teamdev.javaclasses.impl.runtime.ValueHolder;
 
 import java.text.CharacterIterator;
 import java.util.List;
 import java.util.Optional;
 
-public class BooleanExpressionState<T extends List<Command>> extends State<T> {
+public class BooleanExpressionState extends State<List<Command>> {
 
     private final boolean mayBeFinish;
     private final boolean isLexeme;
+    private final FSMFactory factory;
 
-    BooleanExpressionState(boolean mayBeFinish, boolean isLexeme) {
+    BooleanExpressionState(boolean mayBeFinish, FSMFactory factory) {
         this.mayBeFinish = mayBeFinish;
-        this.isLexeme = isLexeme;
+        this.isLexeme = true;
+        this.factory = factory;
     }
 
     @Override
@@ -29,46 +33,37 @@ public class BooleanExpressionState<T extends List<Command>> extends State<T> {
     }
 
     @Override
-    public boolean accept(CharacterIterator inputSequence, T outputSequence) {
+    public boolean accept(CharacterIterator inputSequence, List<Command> outputSequence) throws DeadLockException {
 
-        FSMFactoryImpl factory = new FSMFactoryImpl();
 
-        try {
+        Optional<List<Command>> possibleCommands = factory.create(
+                FSMFactory.TypeFSM.BOOLEAN_EXPRESSION)
+                .execute(inputSequence);
+        boolean isSuccess = possibleCommands.isPresent();
 
-            Optional<List<Command>> possibleCommands = factory.create(FSMFactory.TypeFSM.BOOLEAN_EXPRESSION)
-                                                              .execute(inputSequence);
-            boolean isSuccess = possibleCommands.isPresent();
+        if (isSuccess) {
+            outputSequence.add(environment -> {
 
-            if (isSuccess) {
-                outputSequence.add((environment) -> {
+                environment.startNewStack();
 
-                    environment.startNewStack();
+                for (Command command : possibleCommands.get()) {
+                    command.execute(environment);
+                }
 
-                    for (Command command : possibleCommands.get()) {
-                        command.execute(environment);
-                    }
+                ValueHolder result = environment.closeTopStack()
+                        .getResult();
 
-                    Optional<ValueHolder> result = environment.closeTopStack()
-                                                              .getResult();
 
-                    if (result.isPresent()) {
 
-                        ValueHolder<Double> resultHolder = result.get();
+                    environment.topStack()
+                            .pushOperand(result);
 
-                        environment.topStack()
-                                   .pushOperand(resultHolder);
+                    environment.keepValue(result);
 
-                        environment.keepValue(resultHolder);
-                    }
-                });
-            }
-
-            return isSuccess;
-
-        }catch (IncorrectFormatOfExpressionException ex){
-            ex.getCause();
+            });
         }
 
-        return false;
+        return isSuccess;
+
     }
 }

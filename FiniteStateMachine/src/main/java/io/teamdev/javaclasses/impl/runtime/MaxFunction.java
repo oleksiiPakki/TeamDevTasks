@@ -1,9 +1,4 @@
-package io.teamdev.javaclasses.impl.math;
-
-import io.teamdev.javaclasses.impl.runtime.DoubleValueHolder;
-import io.teamdev.javaclasses.impl.runtime.DoubleValueReader;
-import io.teamdev.javaclasses.impl.runtime.RuntimeEnvironment;
-import io.teamdev.javaclasses.impl.runtime.ValueHolder;
+package io.teamdev.javaclasses.impl.runtime;
 
 import java.util.*;
 
@@ -20,7 +15,7 @@ public class MaxFunction implements Function {
                     "Max function must contain at least one argument");
         }
 
-        for (ValueHolder<Double> argument : arguments) {
+        for (ValueHolder argument : arguments) {
             argumentsOfFunction.add(DoubleValueReader.readDouble(argument));
         }
 

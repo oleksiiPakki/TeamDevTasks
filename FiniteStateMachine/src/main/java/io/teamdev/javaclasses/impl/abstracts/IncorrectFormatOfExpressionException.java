@@ -1,4 +1,4 @@
-package io.teamdev.javaclasses.impl.fsm;
+package io.teamdev.javaclasses.impl.abstracts;
 
 /**
  * Class, represented the exception, may be thrown in cases of incorrect format of math expression, such as :
@@ -10,19 +10,10 @@ package io.teamdev.javaclasses.impl.fsm;
  *
  */
 public class IncorrectFormatOfExpressionException extends Exception {
-    private int position;
 
-    public IncorrectFormatOfExpressionException(String cause, int position){
-        super(cause);
-        this.position = position;
-
-    }
 
     public IncorrectFormatOfExpressionException(String message) {
         super(message);
     }
 
-    public int errorPosition() {
-        return position;
-    }
 }

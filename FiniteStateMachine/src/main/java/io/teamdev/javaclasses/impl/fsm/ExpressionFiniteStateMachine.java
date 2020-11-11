@@ -1,6 +1,10 @@
 package io.teamdev.javaclasses.impl.fsm;
 
-import io.teamdev.javaclasses.impl.runtime.ValueHolder;
+import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
+import io.teamdev.javaclasses.impl.abstracts.FSMFactory;
+import io.teamdev.javaclasses.impl.abstracts.FiniteStateMachine;
+import io.teamdev.javaclasses.impl.abstracts.State;
+import io.teamdev.javaclasses.impl.runtime.Command;
 import org.apache.log4j.Logger;
 
 import java.text.CharacterIterator;
@@ -22,19 +26,19 @@ public class ExpressionFiniteStateMachine extends FiniteStateMachine<List<Comman
 
     private static final Logger logger = Logger.getLogger(ExpressionFiniteStateMachine.class);
 
-    public ExpressionFiniteStateMachine() {
+    public ExpressionFiniteStateMachine(FSMFactory factory) {
 
         if (logger.isInfoEnabled()) {
             logger.info("Expression Finite machine started" + "\n");
         }
 
-        State<List<Command>> calculableState = new CalculableState<>(true, true);
-        State<List<Command>> binaryOperatorState = new ArithmeticBinaryOperatorState<>(false, true);
+        State<List<Command>> calculableState = new CalculableState(factory);
+        State<List<Command>> binaryOperatorState = new ArithmeticBinaryOperatorState();
 
         calculableState.addTransition(binaryOperatorState);
         binaryOperatorState.addTransition(calculableState);
 
-        setStartedStates(Collections.singleton(calculableState));
+        addStartedStates(Collections.singleton(calculableState));
 
         if (logger.isInfoEnabled()) {
             logger.info("Expression Finite machine finished" + "\n");
@@ -42,14 +46,13 @@ public class ExpressionFiniteStateMachine extends FiniteStateMachine<List<Comman
     }
 
     @Override
-    public Optional<List<Command>> execute(CharacterIterator inputSequence) {
+    public Optional<List<Command>> execute(CharacterIterator inputSequence) throws DeadLockException {
 
         return expression(inputSequence);
     }
 
-    public Optional<List<Command>> expression(CharacterIterator inputSequence) {
+    public Optional<List<Command>> expression(CharacterIterator inputSequence) throws DeadLockException {
 
-        try {
             List<Command> commands = new ArrayList<>();
 
             boolean isSuccess = run(inputSequence, commands);
@@ -58,9 +61,6 @@ public class ExpressionFiniteStateMachine extends FiniteStateMachine<List<Comman
                 return Optional.of(commands);
             }
 
-        } catch (IncorrectFormatOfExpressionException ex) {
-            ex.getCause();
-        }
 
         return Optional.empty();
     }

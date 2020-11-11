@@ -1,9 +1,4 @@
-package io.teamdev.javaclasses.impl.math;
-
-import io.teamdev.javaclasses.impl.runtime.DoubleValueHolder;
-import io.teamdev.javaclasses.impl.runtime.DoubleValueReader;
-import io.teamdev.javaclasses.impl.runtime.RuntimeEnvironment;
-import io.teamdev.javaclasses.impl.runtime.ValueHolder;
+package io.teamdev.javaclasses.impl.runtime;
 
 import java.util.ArrayDeque;
 import java.util.List;
@@ -14,7 +9,7 @@ public class PowerFunction implements Function {
     public void execute(RuntimeEnvironment environment, List<ValueHolder> arguments)
             throws WrongCountOfArgumentsException {
 
-        int requiredCountOfArguments = 2;
+        final int requiredCountOfArguments = 2;
 
         if (requiredCountOfArguments != arguments.size()) {
             throw new WrongCountOfArgumentsException(

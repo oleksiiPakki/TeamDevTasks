@@ -1,6 +1,4 @@
-package io.teamdev.javaclasses.impl.fsm;
-
-import io.teamdev.javaclasses.impl.abstractfactory.Acceptor;
+package io.teamdev.javaclasses.impl.abstracts;
 
 import java.text.CharacterIterator;
 import java.util.ArrayList;
@@ -13,7 +11,7 @@ import static java.util.Optional.empty;
  * @param <T>
  *         define the class, representing the result of execution
  */
-public abstract class FiniteStateMachine<T> implements Acceptor {
+public abstract class FiniteStateMachine<T> implements Compiler {
 
     private Collection<State<T>> transitions = new ArrayList<>();
 
@@ -23,7 +21,7 @@ public abstract class FiniteStateMachine<T> implements Acceptor {
      * @param states
      *         List of possible start states
      */
-    protected void setStartedStates(Iterable<State<T>> states) {
+    protected void addStartedStates(Iterable<State<T>> states) {
         for (State<T> state : states) {
             transitions.add(state);
         }
@@ -36,7 +34,7 @@ public abstract class FiniteStateMachine<T> implements Acceptor {
      *         String, contains math expression
      * @param outputSequence
      *         result of execution of fsm
-     * @throws IncorrectFormatOfExpressionException
+     * @throws DeadLockException
      *         in cases of incorrect format of math expression, such as :
      *         -missing operands of binary operators;
      *         -empty brackets;
@@ -44,7 +42,7 @@ public abstract class FiniteStateMachine<T> implements Acceptor {
      *         -empty math expression;
      */
     public boolean run(CharacterIterator inputSequence, T outputSequence)
-            throws IncorrectFormatOfExpressionException {
+            throws DeadLockException {
 
         Optional<State<T>> currentState = empty();
 
@@ -78,7 +76,7 @@ public abstract class FiniteStateMachine<T> implements Acceptor {
                         return true;
 
                     } else {
-                        throw new DeadLockException("Deadlock:", inputSequence.getIndex());
+                        throw new DeadLockException("Deadlock on " + inputSequence.getIndex() + " position");
 
                     }
                 }
@@ -102,12 +100,12 @@ public abstract class FiniteStateMachine<T> implements Acceptor {
      * @return next state
      */
     private Optional<State<T>> stepForward(CharacterIterator inputSequence, T outputSequence,
-                                           Collection<State<T>> transitions) {
+                                           Collection<State<T>> transitions) throws DeadLockException {
 
         for (State<T> state : transitions) {
-            if (state.accept(inputSequence, outputSequence)) {
-                return Optional.of(state);
-            }
+                if (state.accept(inputSequence, outputSequence)) {
+                    return Optional.of(state);
+                }
         }
 
         return Optional.empty();

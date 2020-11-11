@@ -1,5 +1,8 @@
 package io.teamdev.javaclasses.impl.fsm;
 
+import io.teamdev.javaclasses.impl.abstracts.*;
+import io.teamdev.javaclasses.impl.runtime.Command;
+
 import java.text.CharacterIterator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,39 +12,34 @@ import java.util.Optional;
 public class ExpressionWithBracketsFiniteStateMachine
         extends FiniteStateMachine<List<Command>> {
 
-    public ExpressionWithBracketsFiniteStateMachine() {
+    public ExpressionWithBracketsFiniteStateMachine(FSMFactory factory) {
 
-        State<List<Command>> openingBracketForExpressionState = new OpeningBracketForExpressionState<>(
+        State<List<Command>> openingBracketForExpressionState = new OpeningBracketForExpressionState(
                 false,
                 true,
                 '(');
-        State<List<Command>> expressionState = new BooleanExpressionState<>(false, true);
-        State<List<Command>> closingBracketState = new ClosingBracketState<>(true, true, ')');
+        State<List<Command>> expressionState = new BooleanExpressionState(false, factory);
+        State<List<Command>> closingBracketState = new ClosingBracketState(')');
 
         openingBracketForExpressionState.addTransition(expressionState);
         expressionState.addTransition(closingBracketState);
 
-        setStartedStates(Collections.singleton(openingBracketForExpressionState));
+        addStartedStates(Collections.singleton(openingBracketForExpressionState));
     }
 
     @Override
-    public Optional<List<Command>> execute(CharacterIterator inputSequence) {
+    public Optional<List<Command>> execute(CharacterIterator inputSequence) throws DeadLockException {
         return expressionWithBrackets(inputSequence);
     }
 
-    public Optional<List<Command>> expressionWithBrackets(CharacterIterator inputSequence) {
+    public Optional<List<Command>> expressionWithBrackets(CharacterIterator inputSequence) throws DeadLockException {
 
-        try {
-            List<Command> commands = new ArrayList<>();
+        List<Command> commands = new ArrayList<>();
 
-            boolean isSuccess = run(inputSequence, commands);
+        boolean isSuccess = run(inputSequence, commands);
 
-            if (isSuccess) {
-                return Optional.of(commands);
-            }
-
-        } catch (IncorrectFormatOfExpressionException ex) {
-            ex.getCause();
+        if (isSuccess) {
+            return Optional.of(commands);
         }
 
         return Optional.empty();

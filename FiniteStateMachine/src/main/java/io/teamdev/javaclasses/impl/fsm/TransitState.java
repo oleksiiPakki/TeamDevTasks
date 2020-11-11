@@ -1,5 +1,7 @@
 package io.teamdev.javaclasses.impl.fsm;
 
+import io.teamdev.javaclasses.impl.abstracts.State;
+
 import java.text.CharacterIterator;
 
 public class TransitState<T> extends State<T> {
@@ -30,10 +32,8 @@ public class TransitState<T> extends State<T> {
     /**
      * Going to the next character in an input sequence if current character is ','
      *
-     * @param inputSequence
-     *         String, contains math expression
-     * @param outputSequence
-     *         The result after being on this state
+     * @param inputSequence  String, contains math expression
+     * @param outputSequence The result after being on this state
      * @return true if current character is ',', or false if it is not
      */
     @Override

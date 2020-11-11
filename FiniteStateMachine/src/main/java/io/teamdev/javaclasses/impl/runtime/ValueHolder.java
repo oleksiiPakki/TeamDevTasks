@@ -1,7 +1,6 @@
 package io.teamdev.javaclasses.impl.runtime;
 
-public interface ValueHolder<T> {
-    T value();
+public interface ValueHolder {
 
     void accept(ValueHolderVisitor visitor);
 }

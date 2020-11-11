@@ -1,7 +1,10 @@
 package io.teamdev.javaclasses.impl.fsm;
 
+import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
+import io.teamdev.javaclasses.impl.abstracts.FiniteStateMachine;
+import io.teamdev.javaclasses.impl.abstracts.State;
+import io.teamdev.javaclasses.impl.runtime.Command;
 import io.teamdev.javaclasses.impl.runtime.DoubleValueHolder;
-import io.teamdev.javaclasses.impl.runtime.RuntimeEnvironment;
 import org.apache.log4j.Logger;
 
 import java.text.CharacterIterator;
@@ -21,9 +24,9 @@ public class NumberFiniteStateMachine extends FiniteStateMachine<StringBuilder> 
         }
 
         State<StringBuilder> negativeNumberSignState = new SignCharacterState(false, false, '-');
-        State<StringBuilder> integerDigitState = new DigitCharacterState(true, false);
+        State<StringBuilder> integerDigitState = new DigitCharacterState();
         State<StringBuilder> decimalPointState = new SignCharacterState(false, false, '.');
-        State<StringBuilder> decimalDigitState = new DigitCharacterState(true, false);
+        State<StringBuilder> decimalDigitState = new DigitCharacterState();
 
         negativeNumberSignState.addTransition(integerDigitState);
 
@@ -33,7 +36,7 @@ public class NumberFiniteStateMachine extends FiniteStateMachine<StringBuilder> 
         decimalPointState.addTransition(decimalDigitState);
         decimalDigitState.addTransition(decimalDigitState);
 
-        setStartedStates(Arrays.asList(negativeNumberSignState, integerDigitState));
+        addStartedStates(Arrays.asList(negativeNumberSignState, integerDigitState));
 
         if (logger.isInfoEnabled()) {
             logger.info("Number Finite machine finished" + "\n");
@@ -41,12 +44,11 @@ public class NumberFiniteStateMachine extends FiniteStateMachine<StringBuilder> 
 
     }
 
-    public Optional<List<Command>> number(CharacterIterator input) {
+    public Optional<List<Command>> number(CharacterIterator input) throws DeadLockException {
         List<Command> resultCommands = new ArrayList<>();
 
         StringBuilder number = new StringBuilder();
 
-        try {
             boolean isSuccess = run(input, number);
 
             if (isSuccess) {
@@ -60,15 +62,12 @@ public class NumberFiniteStateMachine extends FiniteStateMachine<StringBuilder> 
 
             }
 
-        } catch (IncorrectFormatOfExpressionException ex) {
-            ex.getCause();
-        }
 
         return Optional.empty();
     }
 
     @Override
-    public Optional<List<Command>> execute(CharacterIterator inputSequence) {
+    public Optional<List<Command>> execute(CharacterIterator inputSequence) throws DeadLockException {
         return number(inputSequence);
     }
 }

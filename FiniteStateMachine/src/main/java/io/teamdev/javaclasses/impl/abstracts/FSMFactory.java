@@ -1,4 +1,4 @@
-package io.teamdev.javaclasses.impl.abstractfactory;
+package io.teamdev.javaclasses.impl.abstracts;
 
 public interface FSMFactory {
 
@@ -12,5 +12,5 @@ public interface FSMFactory {
         INITIALIZATION,
         STATEMENT
     }
-    Acceptor create(TypeFSM typeFSM);
+    Compiler create(TypeFSM typeFSM);
 }

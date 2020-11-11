@@ -1,11 +1,13 @@
 package io.teamdev.javaclasses.impl.fsm;
 
+import io.teamdev.javaclasses.impl.abstracts.State;
+import io.teamdev.javaclasses.impl.runtime.Command;
 import io.teamdev.javaclasses.impl.runtime.RuntimeEnvironment;
 
 import java.text.CharacterIterator;
 import java.util.List;
 
-public class AssignmentCharacterState<T extends List<Command>> extends State<T> {
+public class AssignmentCharacterState extends State<List<Command>> {
 
     private final boolean mayBeFinish;
 
@@ -13,10 +15,9 @@ public class AssignmentCharacterState<T extends List<Command>> extends State<T> 
 
     private final Character requiredCharacter;
 
-    AssignmentCharacterState(boolean mayBeFinish, boolean isLexeme,
-                             Character requiredCharacter) {
-        this.mayBeFinish = mayBeFinish;
-        this.isLexeme = isLexeme;
+    AssignmentCharacterState(Character requiredCharacter) {
+        this.mayBeFinish = false;
+        this.isLexeme = true;
         this.requiredCharacter = requiredCharacter;
     }
 
@@ -31,7 +32,7 @@ public class AssignmentCharacterState<T extends List<Command>> extends State<T> 
     }
 
     @Override
-    public boolean accept(CharacterIterator inputSequence, T outputSequence) {
+    public boolean accept(CharacterIterator inputSequence, List<Command> outputSequence) {
         Character currentCharacter = inputSequence.current();
 
         if (requiredCharacter.equals(currentCharacter)) {

@@ -1,10 +1,12 @@
 package io.teamdev.javaclasses.impl.fsm;
 
+import io.teamdev.javaclasses.impl.abstracts.State;
 import org.apache.log4j.Logger;
 
 import java.text.CharacterIterator;
-/**Implementation of State{@link State}, fsm being is when it finds a digit
- *
+
+/**
+ * Implementation of State{@link State}, fsm being is when it finds a digit
  */
 public class DigitCharacterState extends State<StringBuilder> {
     private static final Logger logger = Logger.getLogger(DigitCharacterState.class);
@@ -12,9 +14,9 @@ public class DigitCharacterState extends State<StringBuilder> {
     private final boolean mayBeFinish;
     private final boolean isLexeme;
 
-     DigitCharacterState(boolean mayBeFinish, boolean isLexeme) {
-        this.mayBeFinish = mayBeFinish;
-        this.isLexeme = isLexeme;
+    DigitCharacterState() {
+        this.mayBeFinish = true;
+        this.isLexeme = false;
     }
 
     @Override
@@ -30,9 +32,10 @@ public class DigitCharacterState extends State<StringBuilder> {
         return mayBeFinish;
     }
 
-    /**Define digit and append it to result StringBuilder
+    /**
+     * Define digit and append it to result StringBuilder
      *
-     * @param inputSequence String, contains math expression
+     * @param inputSequence  String, contains math expression
      * @param outputSequence StringBuilder contains digits of number in a math expression
      * @return true if current character is a digit or false if it is not
      */
@@ -40,8 +43,8 @@ public class DigitCharacterState extends State<StringBuilder> {
     public boolean accept(CharacterIterator inputSequence, StringBuilder outputSequence) {
         char currentCharacterOfSequence = inputSequence.current();
 
-        if (Character.isDigit(currentCharacterOfSequence)){
-            if (logger.isTraceEnabled()){
+        if (Character.isDigit(currentCharacterOfSequence)) {
+            if (logger.isTraceEnabled()) {
                 logger.trace("Fsm in a DigitState: " + inputSequence.current() + "\n");
             }
             outputSequence.append(currentCharacterOfSequence);
