@@ -1,9 +1,9 @@
 package io.teamdev.javaclasses.impl.fsm;
 
 import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
+import io.teamdev.javaclasses.impl.runtime.Command;
 import io.teamdev.javaclasses.impl.abstracts.FSMFactory;
 import io.teamdev.javaclasses.impl.abstracts.State;
-import io.teamdev.javaclasses.impl.runtime.Command;
 import io.teamdev.javaclasses.impl.runtime.ValueHolder;
 
 import java.text.CharacterIterator;
@@ -14,7 +14,6 @@ public class BooleanExpressionState extends State<List<Command>> {
 
     private final boolean mayBeFinish;
     private final boolean isLexeme;
-
     private final FSMFactory factory;
 
     BooleanExpressionState(boolean mayBeFinish, FSMFactory factory) {

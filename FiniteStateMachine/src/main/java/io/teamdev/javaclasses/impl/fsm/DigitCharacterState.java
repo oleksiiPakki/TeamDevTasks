@@ -15,7 +15,6 @@ public class DigitCharacterState extends State<StringBuilder> {
     private final boolean isLexeme;
 
     DigitCharacterState() {
-
         this.mayBeFinish = true;
         this.isLexeme = false;
     }

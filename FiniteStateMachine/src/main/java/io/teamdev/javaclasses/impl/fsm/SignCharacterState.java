@@ -14,7 +14,6 @@ public class SignCharacterState extends State<StringBuilder> {
 
 
     public SignCharacterState(boolean mayBeFinish, boolean isLexeme, Character requiredCharacter) {
-
         this.mayBeFinish = mayBeFinish;
         this.isLexeme = isLexeme;
         this.requiredCharacter = requiredCharacter;

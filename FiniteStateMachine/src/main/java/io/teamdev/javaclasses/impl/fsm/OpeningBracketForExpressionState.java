@@ -12,7 +12,6 @@ public class OpeningBracketForExpressionState extends State<List<Command>> {
     private final Character requiredCharacter;
 
     public OpeningBracketForExpressionState(boolean mayBeFinish, boolean isLexeme, Character requiredCharacter) {
-
         this.mayBeFinish = mayBeFinish;
         this.isLexeme = isLexeme;
         this.requiredCharacter = requiredCharacter;

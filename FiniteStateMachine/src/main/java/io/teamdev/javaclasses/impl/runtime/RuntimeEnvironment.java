@@ -6,10 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RuntimeEnvironment {
+    private boolean isInitializing = false;
+
     private final Deque<ShuntingYard> stack = new ArrayDeque<>();
     private final Memory memory = new Memory();
     private final StringBuilder output = new StringBuilder();
-    private boolean isInitializing = false;
+
 
     public StringBuilder output() {
         return output;
@@ -69,6 +71,9 @@ public class RuntimeEnvironment {
     }
 
 
+
+
+
     private static class Memory {
         private final Deque<ValueHolder> values = new ArrayDeque<>();
         private final Deque<String> variables = new ArrayDeque<>();
@@ -89,6 +94,7 @@ public class RuntimeEnvironment {
         private ValueHolder topValue() {
             return values.pop();
         }
+
 
 
     }

@@ -17,7 +17,6 @@ public class BooleanBinaryOperatorState extends State<List<Command>> {
     private final Map<String, BooleanBinaryOperator> operators = new HashMap<>();
 
     BooleanBinaryOperatorState() {
-
         this.mayBeFinish = false;
         this.isLexeme = true;
     }

@@ -37,7 +37,6 @@ public class CaseFiniteStateMachine extends FiniteStateMachine<SwitchStructure> 
 
     @Override
     public Optional<List<Command>> execute(CharacterIterator inputSequence)  {
-
         return Optional.empty();
     }
 }

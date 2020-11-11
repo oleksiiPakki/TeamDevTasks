@@ -34,7 +34,6 @@ public class SwitchState extends State<List<Command>> {
         boolean isSuccess = new SwitchFiniteStateMachine().run(inputSequence, switchStructure);
 
         if (isSuccess){
-
             outputSequence.add(switchStructure::execute);
         }
 

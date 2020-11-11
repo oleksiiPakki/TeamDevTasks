@@ -1,8 +1,8 @@
 package io.teamdev.javaclasses.calculator;
 
 import io.teamdev.javaclasses.impl.abstracts.FSMFactory;
-import io.teamdev.javaclasses.impl.abstracts.IncorrectFormatOfExpressionException;
 import io.teamdev.javaclasses.impl.fsm.FSMFactoryImpl;
+import io.teamdev.javaclasses.impl.abstracts.IncorrectFormatOfExpressionException;
 import io.teamdev.javaclasses.impl.runtime.Command;
 import io.teamdev.javaclasses.impl.runtime.ProgramExecutionException;
 import io.teamdev.javaclasses.impl.runtime.RuntimeEnvironment;
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 /**
  * A service that enabled to compute various mathematical expressions,
- * including numbers, binary operations, brackets  and functions
+ * including numbers, binary operations, brackets and functions
  * Examples:
  * 2*(5+7*(4+1))+20
  */

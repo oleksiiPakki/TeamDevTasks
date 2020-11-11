@@ -8,7 +8,8 @@ import java.util.Optional;
 import static java.util.Optional.empty;
 
 /**
- * @param <T> define the class, representing the result of execution
+ * @param <T>
+ *         define the class, representing the result of execution
  */
 public abstract class FiniteStateMachine<T> implements Compiler {
 
@@ -17,7 +18,8 @@ public abstract class FiniteStateMachine<T> implements Compiler {
     /**
      * Registering possible start states for fsm
      *
-     * @param states List of possible start states
+     * @param states
+     *         List of possible start states
      */
     protected void addStartedStates(Iterable<State<T>> states) {
         for (State<T> state : states) {
@@ -28,13 +30,16 @@ public abstract class FiniteStateMachine<T> implements Compiler {
     /**
      * Execution of fsm
      *
-     * @param inputSequence  String, contains math expression
-     * @param outputSequence result of execution of fsm
-     * @throws DeadLockException in cases of incorrect format of math expression, such as :
-     *                           -missing operands of binary operators;
-     *                           -empty brackets;
-     *                           -incorrect brackets sequence;
-     *                           -empty math expression;
+     * @param inputSequence
+     *         String, contains math expression
+     * @param outputSequence
+     *         result of execution of fsm
+     * @throws DeadLockException
+     *         in cases of incorrect format of math expression, such as :
+     *         -missing operands of binary operators;
+     *         -empty brackets;
+     *         -incorrect brackets sequence;
+     *         -empty math expression;
      */
     public boolean run(CharacterIterator inputSequence, T outputSequence)
             throws DeadLockException {
@@ -49,7 +54,7 @@ public abstract class FiniteStateMachine<T> implements Compiler {
             char currentCharacter = inputSequence.current();
 
             if (currentState.isPresent() && currentState.get()
-                    .isLexeme()) {
+                                                        .isLexeme()) {
                 if (Character.isWhitespace(currentCharacter)) {
 
                     while (Character.isWhitespace(inputSequence.current())) {
@@ -66,7 +71,7 @@ public abstract class FiniteStateMachine<T> implements Compiler {
                 if (currentState.isPresent()) {
 
                     if (currentState.get()
-                            .mayBeFinish()) {
+                                    .mayBeFinish()) {
 
                         return true;
 
@@ -86,18 +91,21 @@ public abstract class FiniteStateMachine<T> implements Compiler {
     }
 
     /**
-     * @param inputSequence  String, contains math expression
-     * @param outputSequence Result of execution of fsm on current state
-     * @param transitions    possible transitions for current state
+     * @param inputSequence
+     *         String, contains math expression
+     * @param outputSequence
+     *         Result of execution of fsm on current state
+     * @param transitions
+     *         possible transitions for current state
      * @return next state
      */
     private Optional<State<T>> stepForward(CharacterIterator inputSequence, T outputSequence,
                                            Collection<State<T>> transitions) throws DeadLockException {
 
         for (State<T> state : transitions) {
-            if (state.accept(inputSequence, outputSequence)) {
-                return Optional.of(state);
-            }
+                if (state.accept(inputSequence, outputSequence)) {
+                    return Optional.of(state);
+                }
         }
 
         return Optional.empty();

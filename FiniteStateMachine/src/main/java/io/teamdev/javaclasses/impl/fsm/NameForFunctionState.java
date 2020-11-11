@@ -17,7 +17,6 @@ public class NameForFunctionState extends State<FunctionStructure> {
     private final Map<String, Function> functions = new HashMap<>();
 
     public NameForFunctionState(boolean mayBeFinish, boolean isLexeme) {
-
         this.mayBeFinish = mayBeFinish;
         this.isLexeme = isLexeme;
     }

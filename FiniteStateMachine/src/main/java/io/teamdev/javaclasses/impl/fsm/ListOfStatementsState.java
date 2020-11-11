@@ -1,8 +1,8 @@
 package io.teamdev.javaclasses.impl.fsm;
 
 import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
-import io.teamdev.javaclasses.impl.abstracts.State;
 import io.teamdev.javaclasses.impl.runtime.Command;
+import io.teamdev.javaclasses.impl.abstracts.State;
 
 import java.text.CharacterIterator;
 import java.util.ArrayList;

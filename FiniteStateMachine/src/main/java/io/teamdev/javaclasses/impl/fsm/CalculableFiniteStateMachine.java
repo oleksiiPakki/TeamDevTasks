@@ -1,9 +1,6 @@
 package io.teamdev.javaclasses.impl.fsm;
 
-import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
-import io.teamdev.javaclasses.impl.abstracts.FSMFactory;
-import io.teamdev.javaclasses.impl.abstracts.FiniteStateMachine;
-import io.teamdev.javaclasses.impl.abstracts.State;
+import io.teamdev.javaclasses.impl.abstracts.*;
 import io.teamdev.javaclasses.impl.runtime.Command;
 
 import java.text.CharacterIterator;
@@ -27,7 +24,6 @@ public class CalculableFiniteStateMachine extends FiniteStateMachine<List<Comman
 
     @Override
     public Optional<List<Command>> execute(CharacterIterator inputSequence) throws DeadLockException {
-
         return calculable(inputSequence);
     }
 

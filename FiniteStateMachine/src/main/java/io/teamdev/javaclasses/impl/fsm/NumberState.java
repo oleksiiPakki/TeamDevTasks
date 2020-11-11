@@ -51,7 +51,8 @@ public class NumberState extends State<List<Command>> {
     public boolean accept(CharacterIterator inputSequence, List<Command> outputSequence) throws DeadLockException {
 
 
-        Optional<List<Command>> possibleCommands = factory.create(FSMFactory.TypeFSM.NUMBER).execute(inputSequence);
+        Optional<List<Command>> possibleCommands = factory.create(FSMFactory.TypeFSM.NUMBER)
+                .execute(inputSequence);
 
         if (possibleCommands.isPresent()) {
 

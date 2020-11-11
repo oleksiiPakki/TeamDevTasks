@@ -39,7 +39,6 @@ public class ExpressionWithBracketsFiniteStateMachine
         boolean isSuccess = run(inputSequence, commands);
 
         if (isSuccess) {
-
             return Optional.of(commands);
         }
 

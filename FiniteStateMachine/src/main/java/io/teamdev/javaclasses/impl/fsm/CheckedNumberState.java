@@ -10,7 +10,6 @@ public class CheckedNumberState extends State<SwitchStructure> {
     private final boolean isLexeme;
 
     public CheckedNumberState(boolean mayBeFinish, boolean isLexeme) {
-
         this.mayBeFinish = mayBeFinish;
         this.isLexeme = isLexeme;
     }

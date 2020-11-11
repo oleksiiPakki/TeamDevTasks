@@ -12,6 +12,7 @@ import java.util.Optional;
 public class SwitchWordFiniteStateMachine extends FiniteStateMachine<StringBuilder> {
 
     public SwitchWordFiniteStateMachine() {
+
         State<StringBuilder> sRequiredCharacterState = new TransitState<>(false, false, 's');
         State<StringBuilder> wRequiredCharacterState = new TransitState<>(false, false, 'w');
         State<StringBuilder> iRequiredCharacterState = new TransitState<>(false, false, 'i');

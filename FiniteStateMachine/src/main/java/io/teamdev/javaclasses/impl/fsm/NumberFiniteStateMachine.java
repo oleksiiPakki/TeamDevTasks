@@ -45,7 +45,6 @@ public class NumberFiniteStateMachine extends FiniteStateMachine<StringBuilder> 
     }
 
     public Optional<List<Command>> number(CharacterIterator input) throws DeadLockException {
-
         List<Command> resultCommands = new ArrayList<>();
 
         StringBuilder number = new StringBuilder();

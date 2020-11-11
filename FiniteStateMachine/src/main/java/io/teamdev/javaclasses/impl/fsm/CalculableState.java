@@ -1,9 +1,9 @@
 package io.teamdev.javaclasses.impl.fsm;
 
 import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
+import io.teamdev.javaclasses.impl.runtime.Command;
 import io.teamdev.javaclasses.impl.abstracts.FSMFactory;
 import io.teamdev.javaclasses.impl.abstracts.State;
-import io.teamdev.javaclasses.impl.runtime.Command;
 import io.teamdev.javaclasses.impl.runtime.ValueHolder;
 
 import java.text.CharacterIterator;
@@ -17,7 +17,6 @@ public class CalculableState extends State<List<Command>> {
     private final FSMFactory factory;
 
     CalculableState(FSMFactory factory) {
-
         this.mayBeFinish = true;
         this.isLexeme = true;
         this.factory = factory;

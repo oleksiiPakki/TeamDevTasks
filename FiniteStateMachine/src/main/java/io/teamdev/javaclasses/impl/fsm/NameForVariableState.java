@@ -47,7 +47,8 @@ public class NameForVariableState extends State<List<Command>> {
                     return false;
                 }
 
-                outputSequence.add(environment -> environment.keepVariable(possibleNameOfVariable.toString()));
+                outputSequence.add(
+                        environment -> environment.keepVariable(possibleNameOfVariable.toString()));
             }
 
             return isSuccess;
