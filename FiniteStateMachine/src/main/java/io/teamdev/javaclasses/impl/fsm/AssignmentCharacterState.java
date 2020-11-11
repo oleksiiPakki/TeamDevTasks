@@ -16,6 +16,7 @@ public class AssignmentCharacterState extends State<List<Command>> {
     private final Character requiredCharacter;
 
     AssignmentCharacterState(Character requiredCharacter) {
+
         this.mayBeFinish = false;
         this.isLexeme = true;
         this.requiredCharacter = requiredCharacter;

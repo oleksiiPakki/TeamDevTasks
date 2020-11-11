@@ -17,6 +17,7 @@ public class ExpressionState extends State<List<Command>> {
     private final FSMFactory factory;
 
     ExpressionState(FSMFactory factory) {
+
         this.mayBeFinish = true;
         this.isLexeme = true;
         this.factory = factory;

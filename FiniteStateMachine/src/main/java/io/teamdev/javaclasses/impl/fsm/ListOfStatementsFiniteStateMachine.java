@@ -26,6 +26,7 @@ public class ListOfStatementsFiniteStateMachine extends FiniteStateMachine<List<
 
     @Override
     public Optional<List<Command>> execute(CharacterIterator inputSequence) {
+
         return Optional.empty();
     }
 }

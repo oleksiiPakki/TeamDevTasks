@@ -12,6 +12,7 @@ import java.util.Optional;
 public class ProgramFiniteStateMachine extends FiniteStateMachine<List<Command>> {
 
     public ProgramFiniteStateMachine() {
+
         State<List<Command>> listOfStatementsState = new ListOfStatementsState(true, true);
         State<List<Command>> switchState = new SwitchState(true, true);
 

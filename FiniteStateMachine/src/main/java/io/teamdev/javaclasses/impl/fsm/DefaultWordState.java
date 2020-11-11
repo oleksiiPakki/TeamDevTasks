@@ -11,6 +11,7 @@ public class DefaultWordState<T> extends State<T> {
     private final boolean isLexeme;
 
     public DefaultWordState(boolean mayBeFinish, boolean isLexeme) {
+
         this.mayBeFinish = mayBeFinish;
         this.isLexeme = isLexeme;
     }

@@ -35,6 +35,7 @@ public class ListOfDefaultExecutingStatementsState extends State<SwitchStructure
         boolean isSuccess = new ListOfStatementsFiniteStateMachine().run(inputSequence, commands);
 
         if (isSuccess){
+
             outputSequence.addCommandToExecute(environment -> {
 
                 if (!outputSequence.isRequiredNumberHasBeenFounded()) {

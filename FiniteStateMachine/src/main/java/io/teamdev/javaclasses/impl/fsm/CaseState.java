@@ -10,6 +10,7 @@ public class CaseState extends State<SwitchStructure> {
     private final boolean isLexeme;
 
     public CaseState(boolean mayBeFinish, boolean isLexeme) {
+
         this.mayBeFinish = mayBeFinish;
         this.isLexeme = isLexeme;
     }

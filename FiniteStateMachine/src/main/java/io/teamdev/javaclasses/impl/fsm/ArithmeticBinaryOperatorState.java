@@ -13,7 +13,6 @@ import java.util.Optional;
 /**
  * Implementation of State.
  * Fsm being on this  state when it finds one of the four arithmetical operations (+,-,*,/)
- *
  */
 public class ArithmeticBinaryOperatorState extends State<List<Command>> {
 

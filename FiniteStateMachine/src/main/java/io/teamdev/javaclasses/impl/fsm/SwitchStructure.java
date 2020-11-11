@@ -28,6 +28,7 @@ public class SwitchStructure {
 
 
         for (Command command : commandsToExecute) {
+
             command.execute(environment);
         }
 

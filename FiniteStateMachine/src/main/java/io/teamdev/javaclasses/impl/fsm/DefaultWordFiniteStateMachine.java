@@ -37,6 +37,7 @@ public class DefaultWordFiniteStateMachine extends FiniteStateMachine<StringBuil
 
     @Override
     public Optional<List<Command>> execute(CharacterIterator inputSequence) {
+
         return Optional.empty();
     }
 }

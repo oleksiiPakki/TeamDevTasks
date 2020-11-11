@@ -32,6 +32,7 @@ public class DefaultFiniteStateMachine extends FiniteStateMachine<SwitchStructur
 
     @Override
     public Optional<List<Command>> execute(CharacterIterator inputSequence) {
+
         return Optional.empty();
     }
 }

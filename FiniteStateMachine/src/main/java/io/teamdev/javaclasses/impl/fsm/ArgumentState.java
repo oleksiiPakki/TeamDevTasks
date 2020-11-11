@@ -1,9 +1,9 @@
 package io.teamdev.javaclasses.impl.fsm;
 
 import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
-import io.teamdev.javaclasses.impl.runtime.Command;
 import io.teamdev.javaclasses.impl.abstracts.FSMFactory;
 import io.teamdev.javaclasses.impl.abstracts.State;
+import io.teamdev.javaclasses.impl.runtime.Command;
 import io.teamdev.javaclasses.impl.runtime.FunctionStructure;
 
 import java.text.CharacterIterator;
@@ -17,6 +17,7 @@ public class ArgumentState extends State<FunctionStructure> {
     private final FSMFactory factory;
 
     ArgumentState(FSMFactory factory) {
+
         this.mayBeFinish = false;
         this.isLexeme = true;
         this.factory = factory;

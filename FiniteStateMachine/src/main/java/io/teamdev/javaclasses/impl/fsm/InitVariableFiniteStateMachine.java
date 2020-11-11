@@ -35,6 +35,7 @@ public class InitVariableFiniteStateMachine extends FiniteStateMachine<List<Comm
             boolean isSuccess = run(inputSequence, commands);
 
             if (isSuccess) {
+
                 return Optional.of(commands);
             }
 

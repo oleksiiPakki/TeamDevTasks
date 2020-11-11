@@ -43,6 +43,7 @@ public class StatementState extends State<List<Command>> {
 
                     for (Command command : commands.get()) {
                         command.execute(environment);
+
                     }
                 });
             }

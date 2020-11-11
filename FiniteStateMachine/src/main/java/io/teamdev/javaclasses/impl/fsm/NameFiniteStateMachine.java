@@ -31,6 +31,7 @@ public class NameFiniteStateMachine extends FiniteStateMachine<StringBuilder> {
 
     @Override
     public Optional<List<Command>> execute(CharacterIterator inputSequence) {
+
         return Optional.empty();
     }
 

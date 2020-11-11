@@ -12,5 +12,6 @@ public interface FSMFactory {
         INITIALIZATION,
         STATEMENT
     }
+
     Compiler create(TypeFSM typeFSM);
 }

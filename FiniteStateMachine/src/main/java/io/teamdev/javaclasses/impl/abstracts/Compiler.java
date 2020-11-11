@@ -7,6 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface Compiler {
-     Optional<List<Command>> execute(CharacterIterator inputSequence) throws
-                                                                            DeadLockException;
+    Optional<List<Command>> execute(CharacterIterator inputSequence) throws
+            DeadLockException;
 }

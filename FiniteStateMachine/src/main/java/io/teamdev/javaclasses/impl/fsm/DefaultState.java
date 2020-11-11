@@ -10,6 +10,7 @@ public class DefaultState extends State<SwitchStructure> {
     private final boolean isLexeme;
 
     public DefaultState(boolean mayBeFinish, boolean isLexeme) {
+
         this.mayBeFinish = mayBeFinish;
         this.isLexeme = isLexeme;
     }

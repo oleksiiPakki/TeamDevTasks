@@ -16,7 +16,6 @@ import java.util.Optional;
 public class FunctionFiniteStateMachine extends FiniteStateMachine<FunctionStructure> {
 
     public FunctionFiniteStateMachine(FSMFactory factory) {
-
         State<FunctionStructure> nameState = new NameForFunctionState(false, false);
         State<FunctionStructure> openingBracketForFunctionState = new TransitState<>(false, true, '(');
         State<FunctionStructure> argumentState = new ArgumentState(factory);

@@ -33,6 +33,7 @@ public class SwitchVariableState extends State<SwitchStructure> {
         boolean isSuccess = new NameFiniteStateMachine().run(inputSequence, variableName);
 
         if (isSuccess) {
+
             outputSequence.addCommandToExecute(environment -> {
 
                 ValueHolder valueHolder = environment.value(variableName.toString());

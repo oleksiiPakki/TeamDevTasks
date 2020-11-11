@@ -40,6 +40,7 @@ public class FunctionState extends State<List<Command>> {
             boolean isSuccess = possibleCommands.isPresent();
 
             if (isSuccess) {
+
                 outputSequence.add(environment -> {
 
                     for (Command command : possibleCommands.get()) {

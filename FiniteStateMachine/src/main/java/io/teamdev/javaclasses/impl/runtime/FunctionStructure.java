@@ -6,6 +6,7 @@ import java.util.List;
 public class FunctionStructure {
 
     private final List<Command> evaluatingArguments = new ArrayList<>();
+
     private Function currentFunction;
 
     public void setFunction(Function currentFunction) {

@@ -15,6 +15,7 @@ public class AlphabeticCharacterState extends State<StringBuilder> {
     private final boolean isLexeme;
 
     AlphabeticCharacterState() {
+
         this.mayBeFinish = true;
         this.isLexeme = false;
     }

@@ -25,6 +25,7 @@ public class ClosingBracketState extends State<List<Command>> {
     private final Character requiredCharacter;
 
     ClosingBracketState(Character requiredCharacter) {
+
         this.mayBeFinish = true;
         this.isLexeme = true;
         this.requiredCharacter = requiredCharacter;

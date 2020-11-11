@@ -10,6 +10,7 @@ public class CaseWordState<T> extends State<T> {
     private final boolean isLexeme;
 
     public CaseWordState(boolean mayBeFinish, boolean isLexeme) {
+
         this.mayBeFinish = mayBeFinish;
         this.isLexeme = isLexeme;
     }

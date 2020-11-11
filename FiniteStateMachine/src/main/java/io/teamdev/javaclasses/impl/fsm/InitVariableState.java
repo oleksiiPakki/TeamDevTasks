@@ -51,6 +51,7 @@ public class InitVariableState extends State<List<Command>> {
 
                 environment.initialize();
             });
+
         } else {
             inputSequence.setIndex(currentPosition);
         }

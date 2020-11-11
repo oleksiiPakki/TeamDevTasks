@@ -25,6 +25,7 @@ public class StatementFiniteStateMachine extends FiniteStateMachine<List<Command
     }
 
     public Optional<List<Command>> statement(CharacterIterator inputSequence) throws DeadLockException {
+
         List<Command> commands = new ArrayList<>();
 
         boolean isSuccess = run(inputSequence, commands);
