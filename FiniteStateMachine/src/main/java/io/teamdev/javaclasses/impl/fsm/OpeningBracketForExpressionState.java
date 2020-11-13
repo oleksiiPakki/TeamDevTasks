@@ -2,6 +2,7 @@ package io.teamdev.javaclasses.impl.fsm;
 
 import io.teamdev.javaclasses.impl.abstracts.State;
 import io.teamdev.javaclasses.impl.runtime.Command;
+import io.teamdev.javaclasses.impl.runtime.RuntimeEnvironment;
 
 import java.text.CharacterIterator;
 import java.util.List;
@@ -32,12 +33,7 @@ public class OpeningBracketForExpressionState extends State<List<Command>> {
         Character currentCharacter = inputSequence.current();
 
         if (requiredCharacter.equals(currentCharacter)) {
-            outputSequence.add((environment) -> {
-
-                environment.startNewStack();
-
-                environment.topStack().pushOpeningBracket();
-            });
+            outputSequence.add(RuntimeEnvironment::startNewStack);
 
             inputSequence.next();
 

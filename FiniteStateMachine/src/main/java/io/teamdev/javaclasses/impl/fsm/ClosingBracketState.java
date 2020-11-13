@@ -63,10 +63,7 @@ public class ClosingBracketState extends State<List<Command>> {
 
             outputSequence.add(environment -> {
 
-                environment.topStack().pushClosingBracket();
-
                 ValueHolder resultHolder = environment.closeTopStack().getResult();
-
 
                 double result = DoubleValueReader.readDouble(resultHolder);
 

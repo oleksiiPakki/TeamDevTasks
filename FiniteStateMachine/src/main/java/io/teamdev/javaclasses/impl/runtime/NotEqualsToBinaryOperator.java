@@ -11,7 +11,7 @@ public class NotEqualsToBinaryOperator implements BooleanBinaryOperator {
     @Override
     public BooleanValueHolder execute(ValueHolder leftOperand, ValueHolder rightOperand){
 
-        boolean notEqualsTo = !(DoubleValueReader.readDouble(leftOperand).equals(DoubleValueReader.readDouble(rightOperand)));
+        boolean notEqualsTo = !DoubleValueReader.readDouble(leftOperand).equals(DoubleValueReader.readDouble(rightOperand));
 
         return new BooleanValueHolder(notEqualsTo);
     }

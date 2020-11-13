@@ -6,7 +6,7 @@ public class SumFunction implements Function {
 
     @Override
     public void execute(RuntimeEnvironment environment, List<ValueHolder> arguments) {
-        int sum = 0;
+        double sum = 0;
 
         for (ValueHolder argument : arguments){
 

@@ -22,6 +22,7 @@ public class AdditionArithmeticBinaryOperator implements ArithmeticBinaryOperato
     /**
      * @return priority of execution of adding operator (priority is 1)
      */
+    @Override
     public int priority() {
         return priority;
     }

@@ -59,7 +59,7 @@ public class NameForFunctionState extends State<FunctionStructure> {
                 Optional<Function> currentFunction = defineFunction(
                         possibleNameOfFunction.toString());
 
-                if ((currentFunction.isPresent()) && (inputSequence.current() == '(')) {
+                if (currentFunction.isPresent() && (inputSequence.current() == '(')) {
 
                     outputSequence.setFunction(currentFunction.get());
 

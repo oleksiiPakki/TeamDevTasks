@@ -40,7 +40,7 @@ public class BooleanBinaryOperatorState extends State<List<Command>> {
 
         private final Character sign;
 
-        PossibleSignsOfBooleanOperators(Character sign) {
+        PossibleSignsOfBooleanOperators(char sign) {
             this.sign = sign;
         }
 
@@ -91,11 +91,11 @@ public class BooleanBinaryOperatorState extends State<List<Command>> {
                 operators.get(possibleNameOfOperator)) : Optional.empty();
     }
 
-    private boolean isBooleanOperatorSign(Character currentSign) {
+    private boolean isBooleanOperatorSign(char currentSign) {
 
         for (PossibleSignsOfBooleanOperators possibleSign : PossibleSignsOfBooleanOperators.values()) {
 
-            if (possibleSign.sign == currentSign) {
+            if (possibleSign.sign.equals(currentSign)) {
 
                 return true;
             }
