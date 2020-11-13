@@ -23,6 +23,7 @@ public class MultiplyingArithmeticBinaryOperator implements ArithmeticBinaryOper
     /**
      * @return priority of execution of adding operator (priority is 1)
      */
+    @Override
     public int priority() {
         return priority;
     }

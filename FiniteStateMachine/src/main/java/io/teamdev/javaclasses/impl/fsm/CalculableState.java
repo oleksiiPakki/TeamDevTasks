@@ -58,6 +58,12 @@ public class CalculableState extends State<List<Command>> {
             }
 
             return isSuccess;
+
+        }catch (IncorrectFormatOfExpressionException ex){
+            ex.getCause();
+        }
+
+        return false;
     }
 
 }

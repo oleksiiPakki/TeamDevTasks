@@ -1,5 +1,7 @@
 package io.teamdev.javaclasses.compilertests;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.CharStreams;
 import io.teamdev.javaclasses.impl.abstracts.IncorrectFormatOfExpressionException;
 import io.teamdev.javaclasses.impl.runtime.ProgramExecutionException;
 import io.teamdev.javaclasses.impl.runtime.RuntimeEnvironment;
@@ -8,6 +10,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -55,51 +61,28 @@ public class AlmostNormalLanguageCompilerTest {
 
     @ParameterizedTest
     @MethodSource("switchOperator")
-    void testEvaluationOfIncorrectExpression(String input, String expected)
+    void testEvaluationOfSwitchOperator(String input, String expected)
             throws ProgramExecutionException, IncorrectFormatOfExpressionException {
 
 
         assertOutputValue(input, expected, "Executing of switch operator is failed");
     }
 
+
     private static Stream<Arguments> switchOperator() {
         return Stream.of(
-                Arguments.of("m = 2 + 2 * 2; switch(m) {" +
-                        "case 6: {m = pow(m ,2);}" +
-                        "case 7: {m = m * 2;}" +
-                        "case 8: {m = m / 2;}" +
-                        "case 9: {m = m - 2;}" +
-                        "default: {print(m / 0);}" +
-                        "} " +
-                        "print(m);)", "36.0"),
+                Arguments.of(read("switchWithOneVariable.anl") , "36.0"),
 
-                Arguments.of("m = pow(2,3); n = pow(3,2); switch(m | n) {" +
-                        "case 6: {m = pow(m ,2);}" +
-                        "case 7: {m = m * 2;}" +
-                        "case 8: {m = m / 2;}" +
-                        "default: {print(m / 0);}" +
-                        "} " +
-                        "print(m, n);)", "4.0,9.0"),
+                Arguments.of(read("switchWithMuchByFirstVariable.anl"), "4.0,3.0"),
 
-                Arguments.of("m = pow(2,3); n = pow(3,2); switch(m | n) {" +
-                        "case 6: {m = pow(m ,2);}" +
-                        "case 7: {m = m * 2;}" +
-                        "case 9: {m = n * 3;}" +
-                        "default: {print(m / 0);}" +
-                        "} " +
-                        "print(m, n);)", "27.0,9.0"),
+                Arguments.of(read("switchWithMuchBySecondVariable.anl"), "4.0,3.0"),
 
 
-                Arguments.of("m = pow(2,3); n = pow(3,2); switch(m | n) {" +
-                        "case 6: {m = pow(m ,2);}" +
-                        "case 7: {m = m * 2;}" +
-                        "case 10: {m = n * 3;}" +
-                        "default: {m = 0; n = 0;}" +
-                        "} " +
-                        "print(m, n);)", "0.0,0.0")
+                Arguments.of(read("switchWithDefaultCase.anl"), "0.0,0.0")
 
         );
     }
+
 
     private void assertOutputValue(String input, String expected, String message)
             throws IncorrectFormatOfExpressionException, ProgramExecutionException {
@@ -122,6 +105,24 @@ public class AlmostNormalLanguageCompilerTest {
                         compiler.evaluate(program, environment));
         assertThat(ex).hasMessageThat()
                 .contains(expectedMassage);
+    }
+
+    static String read(String fileName) {
+
+        ClassLoader classLoader = AlmostNormalLanguageCompiler.class.getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(fileName);
+
+        try {
+
+            return CharStreams.toString(new InputStreamReader(Objects.requireNonNull(inputStream),
+                    Charsets.UTF_8));
+
+        } catch (IOException e) {
+
+            e.initCause(new Exception("Cannot open file : " + fileName).getCause());
+
+            return "";
+        }
     }
 
 

@@ -5,7 +5,6 @@ import java.util.Deque;
 
 public class ShuntingYard {
 
-    private int countOfBracketsDiscrepancy = 0;
 
     private final Deque<ValueHolder> operands = new ArrayDeque<>();
     private final Deque<BinaryOperator> binaryOperators = new ArrayDeque<>();
@@ -45,16 +44,6 @@ public class ShuntingYard {
         binaryOperators.push(binaryOperator);
     }
 
-    public void pushOpeningBracket() {
-
-        countOfBracketsDiscrepancy++;
-
-    }
-
-    public void pushClosingBracket() {
-
-        countOfBracketsDiscrepancy--;
-    }
 
     /**
      * @return result of execution

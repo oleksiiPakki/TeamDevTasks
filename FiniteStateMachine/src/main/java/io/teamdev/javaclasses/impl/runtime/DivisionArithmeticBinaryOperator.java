@@ -23,6 +23,7 @@ public class DivisionArithmeticBinaryOperator implements ArithmeticBinaryOperato
     /**
      * @return priority of execution of dividing operator (priority is 2)
      */
+    @Override
     public int priority() {
         return priority;
     }
