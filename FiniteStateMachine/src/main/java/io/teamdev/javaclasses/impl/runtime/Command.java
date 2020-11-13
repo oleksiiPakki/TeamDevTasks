@@ -1,6 +1,9 @@
-package io.teamdev.javaclasses.impl.runtime;
+package io.teamdev.javaclasses.impl.abstracts;
+
+import io.teamdev.javaclasses.impl.runtime.ProgramExecutionException;
+import io.teamdev.javaclasses.impl.runtime.RuntimeEnvironment;
 
 public interface Command {
-    void execute(RuntimeEnvironment environment) throws ProgramExecutionException;
+    void execute(RuntimeEnvironment environment) throws DeadLockException, ProgramExecutionException;
 
 }
