@@ -37,7 +37,8 @@ public class TransitState<T> extends State<T> {
      * @return true if current character is ',', or false if it is not
      */
     @Override
-    public boolean accept(CharacterIterator inputSequence, T outputSequence) {
+    public boolean accept(CharacterIterator inputSequence, T outputSequence) throws
+                                                                             IncorrectFormatOfExpressionException {
 
         if (requiredCharacter.equals(inputSequence.current())) {
             inputSequence.next();
