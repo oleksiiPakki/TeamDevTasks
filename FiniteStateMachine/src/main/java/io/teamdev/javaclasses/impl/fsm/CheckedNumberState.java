@@ -42,7 +42,6 @@ public class CheckedNumberState extends State<SwitchStructure> {
                     if (isSearching) {
 
                         outputSequence.isExecutingStatements();
-                        outputSequence.requiredNumberHasBeenFounded();
 
                     } else {
 
