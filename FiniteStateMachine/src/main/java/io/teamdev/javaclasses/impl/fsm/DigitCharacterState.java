@@ -1,5 +1,6 @@
 package io.teamdev.javaclasses.impl.fsm;
 
+import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
 import io.teamdev.javaclasses.impl.abstracts.State;
 import org.apache.log4j.Logger;
 
@@ -41,7 +42,7 @@ public class DigitCharacterState extends State<StringBuilder> {
      */
     @Override
     public boolean accept(CharacterIterator inputSequence, StringBuilder outputSequence) throws
-                                                                                         IncorrectFormatOfExpressionException {
+            DeadLockException {
         char currentCharacterOfSequence = inputSequence.current();
 
         if (Character.isDigit(currentCharacterOfSequence)) {
