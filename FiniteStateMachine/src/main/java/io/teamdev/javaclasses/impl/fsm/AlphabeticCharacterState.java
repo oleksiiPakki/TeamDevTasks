@@ -1,7 +1,6 @@
 package io.teamdev.javaclasses.impl.fsm;
 
 import io.teamdev.javaclasses.impl.abstracts.State;
-import org.apache.log4j.Logger;
 
 import java.text.CharacterIterator;
 
@@ -9,7 +8,6 @@ import java.text.CharacterIterator;
  * Representing the alphabetic character in the name of functions
  */
 public class AlphabeticCharacterState extends State<StringBuilder> {
-    private static final Logger logger = Logger.getLogger(AlphabeticCharacterState.class);
 
     private final boolean mayBeFinish;
     private final boolean isLexeme;
@@ -47,9 +45,7 @@ public class AlphabeticCharacterState extends State<StringBuilder> {
 
         if (Character.isLetter(currentCharacter)) {
 
-            if (logger.isInfoEnabled()) {
-                logger.info("Fsm in a DigitState: " + inputSequence.current() + "\n");
-            }
+
 
             outputSequence.append(currentCharacter);
 

@@ -2,7 +2,8 @@ package io.teamdev.javaclasses.impl.fsm;
 
 import io.teamdev.javaclasses.impl.abstracts.State;
 import io.teamdev.javaclasses.impl.runtime.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.CharacterIterator;
 import java.util.HashMap;
@@ -17,7 +18,7 @@ import java.util.Optional;
  */
 public class ArithmeticBinaryOperatorState extends State<List<Command>> {
 
-    private static final Logger logger = Logger.getLogger(ArithmeticBinaryOperatorState.class);
+    private final static Logger logger = LogManager.getLogger(ArithmeticBinaryOperatorState.class);
 
     private final boolean mayBeFinish;
     private final boolean isLexeme;
@@ -28,6 +29,8 @@ public class ArithmeticBinaryOperatorState extends State<List<Command>> {
         this.mayBeFinish = false;
         this.isLexeme = true;
     }
+
+
 
     @Override
     public boolean mayBeFinish() {
@@ -59,15 +62,18 @@ public class ArithmeticBinaryOperatorState extends State<List<Command>> {
     @Override
     public boolean accept(CharacterIterator inputSequence, List<Command> outputSequence) {
 
+
+
         Character currentCharacter = inputSequence.current();
 
         Optional<ArithmeticBinaryOperator> currentOperator = defineBinaryOperator(
                 currentCharacter);
 
         if (currentOperator.isPresent()) {
-            if (logger.isInfoEnabled()) {
-                logger.info("Fsm in a BinaryOperatorState: " + inputSequence.current() + "\n");
-            }
+
+                logger.info("execution on arithmetic binary operator state");
+
+
             outputSequence.add(environment -> environment.topStack()
                                                          .pushOperator(currentOperator.get()));
 

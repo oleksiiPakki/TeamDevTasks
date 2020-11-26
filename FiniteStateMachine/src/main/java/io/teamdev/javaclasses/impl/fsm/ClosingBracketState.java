@@ -2,7 +2,7 @@ package io.teamdev.javaclasses.impl.fsm;
 
 import io.teamdev.javaclasses.impl.abstracts.State;
 import io.teamdev.javaclasses.impl.runtime.*;
-import org.apache.log4j.Logger;
+
 
 import java.text.CharacterIterator;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class ClosingBracketState extends State<List<Command>> {
 
-    private static final Logger logger = Logger.getLogger(ClosingBracketState.class);
+    //private static final Logger logger = Logger.getLogger(ClosingBracketState.class);
 
     private final boolean mayBeFinish;
     private final boolean isLexeme;
@@ -57,9 +57,6 @@ public class ClosingBracketState extends State<List<Command>> {
         Character currentCharacter = inputSequence.current();
 
         if (requiredCharacter.equals(currentCharacter)) {
-            if (logger.isInfoEnabled()) {
-                logger.info("fsm in a closing bracket for function state");
-            }
 
             outputSequence.add(environment -> {
 
