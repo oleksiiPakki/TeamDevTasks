@@ -5,7 +5,6 @@ import io.teamdev.javaclasses.impl.abstracts.FSMFactory;
 import io.teamdev.javaclasses.impl.abstracts.FiniteStateMachine;
 import io.teamdev.javaclasses.impl.abstracts.State;
 import io.teamdev.javaclasses.impl.runtime.Command;
-import org.apache.log4j.Logger;
 
 import java.text.CharacterIterator;
 import java.util.ArrayList;
@@ -24,13 +23,11 @@ import java.util.Optional;
  */
 public class ExpressionFiniteStateMachine extends FiniteStateMachine<List<Command>> {
 
-    private static final Logger logger = Logger.getLogger(ExpressionFiniteStateMachine.class);
+
 
     public ExpressionFiniteStateMachine(FSMFactory factory) {
 
-        if (logger.isInfoEnabled()) {
-            logger.info("Expression Finite machine started" + "\n");
-        }
+
 
         State<List<Command>> calculableState = new CalculableState(factory);
         State<List<Command>> binaryOperatorState = new ArithmeticBinaryOperatorState();
@@ -40,9 +37,6 @@ public class ExpressionFiniteStateMachine extends FiniteStateMachine<List<Comman
 
         addStartedStates(Collections.singleton(calculableState));
 
-        if (logger.isInfoEnabled()) {
-            logger.info("Expression Finite machine finished" + "\n");
-        }
     }
 
     @Override

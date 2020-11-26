@@ -1,5 +1,6 @@
 package io.teamdev.javaclasses.impl.fsm;
 
+import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
 import io.teamdev.javaclasses.impl.abstracts.State;
 
 import java.text.CharacterIterator;
@@ -36,8 +37,10 @@ public class TransitState<T> extends State<T> {
      * @param outputSequence The result after being on this state
      * @return true if current character is ',', or false if it is not
      */
+
     @Override
-    public boolean accept(CharacterIterator inputSequence, T outputSequence) {
+    public boolean accept(CharacterIterator inputSequence, T outputSequence) throws
+            DeadLockException {
 
         if (requiredCharacter.equals(inputSequence.current())) {
             inputSequence.next();

@@ -5,7 +5,6 @@ import io.teamdev.javaclasses.impl.abstracts.FiniteStateMachine;
 import io.teamdev.javaclasses.impl.abstracts.State;
 import io.teamdev.javaclasses.impl.runtime.Command;
 import io.teamdev.javaclasses.impl.runtime.DoubleValueHolder;
-import org.apache.log4j.Logger;
 
 import java.text.CharacterIterator;
 import java.util.ArrayList;
@@ -15,13 +14,9 @@ import java.util.Optional;
 
 public class NumberFiniteStateMachine extends FiniteStateMachine<StringBuilder> {
 
-    private static final Logger logger = Logger.getLogger(NumberFiniteStateMachine.class);
 
     public NumberFiniteStateMachine() {
 
-        if (logger.isInfoEnabled()) {
-            logger.info("Number Finite machine started" + "\n");
-        }
 
         State<StringBuilder> negativeNumberSignState = new SignCharacterState(false, false, '-');
         State<StringBuilder> integerDigitState = new DigitCharacterState();
@@ -38,9 +33,7 @@ public class NumberFiniteStateMachine extends FiniteStateMachine<StringBuilder> 
 
         addStartedStates(Arrays.asList(negativeNumberSignState, integerDigitState));
 
-        if (logger.isInfoEnabled()) {
-            logger.info("Number Finite machine finished" + "\n");
-        }
+
 
     }
 

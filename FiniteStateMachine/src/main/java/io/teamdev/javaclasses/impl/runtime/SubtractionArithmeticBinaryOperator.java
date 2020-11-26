@@ -22,6 +22,7 @@ public class SubtractionArithmeticBinaryOperator implements ArithmeticBinaryOper
     /**
      * @return priority of execution of subtracting operator (priority is 1)
      */
+
     @Override
     public int priority() {
         return priority;

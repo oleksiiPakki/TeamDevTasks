@@ -10,7 +10,7 @@ import java.util.List;
 public class OpeningBracketForExpressionState extends State<List<Command>> {
     private final boolean mayBeFinish;
     private final boolean isLexeme;
-    private final char requiredCharacter;
+    private final Character requiredCharacter;
 
     public OpeningBracketForExpressionState(boolean mayBeFinish, boolean isLexeme, Character requiredCharacter) {
         this.mayBeFinish = mayBeFinish;
@@ -30,7 +30,7 @@ public class OpeningBracketForExpressionState extends State<List<Command>> {
 
     @Override
     public boolean accept(CharacterIterator inputSequence, List<Command> outputSequence) {
-        char currentCharacter = inputSequence.current();
+        Character currentCharacter = inputSequence.current();
 
         if (requiredCharacter.equals(currentCharacter)) {
             outputSequence.add(RuntimeEnvironment::startNewStack);

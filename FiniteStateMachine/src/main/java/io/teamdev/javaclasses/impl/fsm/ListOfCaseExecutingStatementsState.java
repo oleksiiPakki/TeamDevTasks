@@ -37,12 +37,14 @@ public class ListOfCaseExecutingStatementsState extends State<SwitchStructure> {
         if (isSuccess){
             outputSequence.addCommandToExecute(environment -> {
 
-                if (outputSequence.whetherExecutingStatements()) {
+                if (outputSequence.whetherExecutingStatements() && !outputSequence.isRequiredNumberHasBeenFounded()) {
                     environment.startNewStack();
 
                     for (Command command : commands) {
                         command.execute(environment);
                     }
+
+                    outputSequence.requiredNumberHasBeenFounded();
                 }
             });
         }
