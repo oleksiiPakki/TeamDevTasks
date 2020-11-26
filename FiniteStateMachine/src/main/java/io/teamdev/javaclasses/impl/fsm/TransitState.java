@@ -37,6 +37,7 @@ public class TransitState<T> extends State<T> {
      * @param outputSequence The result after being on this state
      * @return true if current character is ',', or false if it is not
      */
+
     @Override
     public boolean accept(CharacterIterator inputSequence, T outputSequence) throws
             DeadLockException {

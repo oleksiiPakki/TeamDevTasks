@@ -1,0 +1,13 @@
+rootProject.name = 'Servlets'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.bmuschko:gradle-cargo-plugin:2.7.1'
+    }
+}
+
+

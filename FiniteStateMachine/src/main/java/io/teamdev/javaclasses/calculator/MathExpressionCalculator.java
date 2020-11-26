@@ -1,13 +1,12 @@
 package io.teamdev.javaclasses.calculator;
 
 import io.teamdev.javaclasses.impl.abstracts.FSMFactory;
-import io.teamdev.javaclasses.impl.fsm.FSMFactoryImpl;
 import io.teamdev.javaclasses.impl.abstracts.IncorrectFormatOfExpressionException;
+import io.teamdev.javaclasses.impl.fsm.FSMFactoryImpl;
 import io.teamdev.javaclasses.impl.runtime.Command;
 import io.teamdev.javaclasses.impl.runtime.ProgramExecutionException;
 import io.teamdev.javaclasses.impl.runtime.RuntimeEnvironment;
 import io.teamdev.javaclasses.impl.runtime.ValueHolder;
-import org.apache.log4j.Logger;
 
 import java.text.StringCharacterIterator;
 import java.util.List;
@@ -21,7 +20,6 @@ import java.util.Optional;
  */
 public class MathExpressionCalculator {
 
-    private static final Logger logger = Logger.getLogger(MathExpressionCalculator.class);
 
     /**
      * @param mathExpression String, consisting of a set of numbers, binary operators and functions
@@ -32,9 +30,7 @@ public class MathExpressionCalculator {
      */
     public String evaluate(String mathExpression) throws
             IncorrectFormatOfExpressionException, ProgramExecutionException {
-        if (logger.isInfoEnabled()) {
-            logger.info("Evaluating started" + "\n");
-        }
+
 
         StringCharacterIterator inputChain = new StringCharacterIterator(mathExpression);
 
@@ -57,9 +53,7 @@ public class MathExpressionCalculator {
                 ValueHolder resultHolder = environment.closeTopStack()
                         .getResult();
 
-                if (logger.isInfoEnabled()) {
-                    logger.info("Evaluating finished successful" + "\n");
-                }
+
 
                 return resultHolder.toString();
 

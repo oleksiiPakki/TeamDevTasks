@@ -2,7 +2,6 @@ package io.teamdev.javaclasses.impl.fsm;
 
 import io.teamdev.javaclasses.impl.abstracts.DeadLockException;
 import io.teamdev.javaclasses.impl.abstracts.State;
-import org.apache.log4j.Logger;
 
 import java.text.CharacterIterator;
 
@@ -10,7 +9,7 @@ import java.text.CharacterIterator;
  * Implementation of State{@link State}, fsm being is when it finds a digit
  */
 public class DigitCharacterState extends State<StringBuilder> {
-    private static final Logger logger = Logger.getLogger(DigitCharacterState.class);
+    //private static final Logger logger = Logger.getLogger(DigitCharacterState.class);
 
     private final boolean mayBeFinish;
     private final boolean isLexeme;
@@ -46,9 +45,9 @@ public class DigitCharacterState extends State<StringBuilder> {
         char currentCharacterOfSequence = inputSequence.current();
 
         if (Character.isDigit(currentCharacterOfSequence)) {
-            if (logger.isTraceEnabled()) {
-                logger.trace("Fsm in a DigitState: " + inputSequence.current() + "\n");
-            }
+
+
+
             outputSequence.append(currentCharacterOfSequence);
             inputSequence.next();
 
